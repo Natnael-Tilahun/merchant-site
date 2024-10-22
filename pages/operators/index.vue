@@ -6,10 +6,12 @@ const { getEmployees } = useEmployees();
 const isError = ref(false);
 const isLoading = ref(false);
 const data = ref<Employee[]>([]);
+const operatorsStore = useOperatorsStore();
 
 try {
   isLoading.value = true;
   data.value = await getEmployees();
+  operatorsStore.setOperators(data.value);
 } catch (error) {
   console.error("Getting operators error: ", error);
   isError.value = true;
@@ -21,6 +23,7 @@ const refetch = async () => {
   try {
     isLoading.value = true;
     data.value = await getEmployees();
+    operatorsStore.setOperators(data.value);
   } catch (error) {
     console.error("Getting operators error: ", error);
     isError.value = true;

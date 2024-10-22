@@ -97,7 +97,7 @@ const table = useVueTable({
           </template>
           <template v-else>
             <UiTableRow>
-              <UiTableCell :colSpan="columns.length" class="h-24 text-center">
+              <UiTableCell colSpan="3" class="h-24 text-center">
                 No results.
               </UiTableCell>
             </UiTableRow>

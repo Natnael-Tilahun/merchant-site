@@ -3,7 +3,8 @@ import { z } from "zod";
 
 export const profileFormSchema = toTypedSchema(
   z.object({
-    merchantId: z.string().optional(), businessType: z.string().optional(),
+    merchantId: z.string().optional(),
+    businessType: z.string().optional(),
     businessNumber: z.string(),
     businessName: z.string(),
     tradeLicenseNumber: z.string().optional(),

@@ -10,26 +10,6 @@ const isLoading = ref(true);
 const isError = ref(false);
 const router = useRouter(); // {{ edit_2 }}
 
-const initiatorOptions = computed(() => [
-  { value: "", label: "All Initiators" },
-  ...[
-    "MERCHANT_INITIATED",
-    "MERCHANT_OPERATOR_INITIATED",
-    "PAYER_INITIATED",
-    "NONE",
-  ].map((initiator) => ({
-    value: initiator,
-    label: initiator.replace(/_/g, " ").toLowerCase(),
-  })),
-]);
-
-const filterValue = ref("");
-
-const handleFilter = (table: any) => {
-  table.getColumn("payerName")?.setFilterValue(filterValue.value);
-  table.getColumn("payerAccountNumber")?.setFilterValue(filterValue.value);
-};
-
 try {
   data.value = await getTransactions();
 } catch (error) {
@@ -60,7 +40,7 @@ const navigateToPrintTransactions = () => {
 </script>
 
 <template>
-  <div class="w-full flex flex-col gap-8">
+  <div class="w-full min-h-screen flex flex-col gap-8">
     <div class="flex justify-between pt-4">
       <div>
         <h1 class="md:text-2xl text-lg font-medium">Transactions</h1>
@@ -84,21 +64,14 @@ const navigateToPrintTransactions = () => {
         </NuxtLink>
       </div>
     </div>
-    <div v-if="isLoading" class="py-10 flex justify-center w-full">
+    <div v-if="isLoading" class="py-10 flex justify-center w-full border">
       <UiLoading />
     </div>
 
     <UiCard v-else-if="data && !isError" class="p-6">
       <UiDataTable :columns="columns" :data="data">
         <template v-slot:toolbar="{ table }">
-          <div class="flex flex-1 items-center space-x-2">
-            <UiInput
-              placeholder="Filter by payer name or account number"
-              v-model="filterValue"
-              class="h-8 w-[250px] lg:w-[350px]"
-              @input="handleFilter(table)"
-            />
-          </div>
+          <TransactionsDataTableFilterbar :refetch="refetch" :table="table" />
         </template>
       </UiDataTable>
     </UiCard>

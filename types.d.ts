@@ -32,7 +32,7 @@ interface Merchant {
     tradeLicenseNumber: string
     tradeLicenseIssueDate: string
     tradeLicenseExpiryDate: string
-    taxPayerIdNumber: Gender
+    taxPayerIdNumber: string
     taxPayerIssueDate: string
     taxPayerExpiryDate: string
     businessPhoneNumber: string
@@ -48,6 +48,7 @@ interface Branch {
     branchCode: string
     businessPhoneNumber: string
     faxNumber: string
+    paymentReceivingAccountNumber: string
     address: Address
 }
 
@@ -103,4 +104,5 @@ interface Transaction {
     payerId?: string
     payerName?: string
     payerPhone?: string
+    qrEncodedData?: string
 }

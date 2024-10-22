@@ -11,6 +11,7 @@ const isLoading = ref(true);
 const branchData = ref<Branch[]>([]);
 const employeeData = ref<Employee[]>([]);
 const transactionData = ref<Transaction[]>([]);
+const transactionFilterStore = useTransactionFilterStore();
 
 const branchNumber = computed(() => branchData.value.length);
 const employeeNumber = computed(() => employeeData.value.length);
@@ -22,8 +23,34 @@ const totalTransactionAmount = computed(() =>
 );
 
 try {
+  transactionFilterStore.$reset();
   [branchData.value, employeeData.value, transactionData.value] =
-    await Promise.all([getBranches(), getEmployees(), getTransactions()]);
+    await Promise.all([
+      getBranches(),
+      getEmployees(),
+      getTransactions(
+        "COMPLETED",
+        "0",
+        "10000",
+        "DESC",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ),
+    ]);
 } catch (error) {
   console.error("Error fetching data:", error);
 } finally {
@@ -61,7 +88,6 @@ watch(
         <UiSkeleton class="h-32 w-20 bg-slate-300" />
       </div>
     </div>
-
     <div
       v-else
       class="grid gap-4 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
@@ -114,7 +140,17 @@ watch(
           class="flex flex-row items-center justify-between space-y-0 pb-2"
         >
           <UiCardTitle class="text-sm font-medium">Transactions</UiCardTitle>
-          <svg
+          <NuxtLink to="/transactions/initiate" class="w-fit self-end">
+            <UiButton
+              size="sm"
+              variant="outline"
+              class="w-fit self-end px-4 font-bold text-base rounded-full"
+            >
+              <Icon name="material-symbols:add" size="28" class="mr-"></Icon>
+              New
+            </UiButton>
+          </NuxtLink>
+          <!-- <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
@@ -126,17 +162,21 @@ watch(
           >
             <rect width="20" height="14" x="2" y="5" rx="2" />
             <path d="M2 10h20" />
-          </svg>
+          </svg> -->
         </UiCardHeader>
-        <UiCardContent>
-          <div class="text-2xl font-bold">
-            {{
-              isLoading
-                ? "Loading..."
-                : `${totalTransactionAmount.toFixed(2)} Br`
-            }}
+        <UiCardContent class="flex justify-between">
+          <div class="flex flex-col">
+            <div class="text-2xl font-bold">
+              {{
+                isLoading
+                  ? "Loading..."
+                  : `${totalTransactionAmount.toFixed(2)} Br`
+              }}
+            </div>
+            <p class="text-xs text-muted-foreground">
+              Total transaction amount
+            </p>
           </div>
-          <p class="text-xs text-muted-foreground">Total transaction amount</p>
         </UiCardContent>
       </UiCard>
     </div>
@@ -151,9 +191,22 @@ watch(
       </UiCard>
       <UiCard class="col-span-3 shadow-md rounded-xl dark:bg-gray-800">
         <UiCardHeader>
-          <UiCardTitle>Recent Sales</UiCardTitle>
-          <UiCardDescription> Your recent 5 transactions. </UiCardDescription>
+          <div class="flex justify-between w-full items-center">
+            <div class="space-y-1">
+              <UiCardTitle>Recent Sales</UiCardTitle>
+              <UiCardDescription class="text-xs">
+                Your recent 5 transactions.
+              </UiCardDescription>
+            </div>
+            <NuxtLink
+              class="text-primary text-sm md:text-base"
+              to="/transactions"
+            >
+              View All
+            </NuxtLink>
+          </div>
         </UiCardHeader>
+
         <UiCardContent>
           <DashboardRecentSales :transactionData="transactionData" />
         </UiCardContent>

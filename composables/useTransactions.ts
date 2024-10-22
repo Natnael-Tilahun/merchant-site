@@ -5,40 +5,86 @@ export const useTransactions = () => {
     const runtimeConfig = useRuntimeConfig();
     const store = useAuthStore();
     const isLoading = ref<boolean>(false);
+    const transactionFilterStore = useTransactionFilterStore();
 
 
-    const getTransactions: () => Promise<Transaction[]> = async () => {
-        try {
-            const { data, error, status } = await useAsyncData<Transaction[]>(`transactions`, () =>
-                $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/transactions`, {
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                })
-            );
 
-            if (status.value == "error") {
-                console.log("Getting transactions error : ", error);
-                toast({
-                    title: (error as any)?.value?.data?.title,
-                    description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-                    variant: "destructive",
-                });
-                throw new Error("Getting transactions error: " + error.value?.message);
+    const getTransactions: (
+        paymentStatus?: string,
+        pageNumber?: string,
+        pageSize?: string,
+        sortBy?: string,
+        transactionInitiator?: string,
+        amountGreaterThanOrEqual?: string,
+        amountLessThanOrEqual?: string,
+        payerName?: string,
+        payerPhone?: string,
+        payerAccountNumber?: string,
+        payerId?: string,
+        paymentReference?: string,
+        dynamicId?: string,
+        mbTransactionId?: string,
+        coreTransactionId?: string,
+        merchantAccountNumber?: string,
+        merchantBranchId?: string,
+        merchantOperatorId?: string,
+        initiatedDate?: string,
+        completedDate?: string,
+        expirationDate?: string
+    ) => Promise<Transaction[]> = async (
+        paymentStatus = undefined,
+        pageNumber = undefined,
+        pageSize = undefined,
+        sortBy = undefined,
+        transactionInitiator = undefined,
+        amountGreaterThanOrEqual = undefined,
+        amountLessThanOrEqual = undefined,
+        payerName = undefined,
+        payerPhone = undefined,
+        payerAccountNumber = undefined,
+        payerId = undefined,
+        paymentReference = undefined,
+        dynamicId = undefined,
+        mbTransactionId = undefined,
+        coreTransactionId = undefined,
+        merchantAccountNumber = undefined,
+        merchantBranchId = undefined,
+        merchantOperatorId = undefined,
+        initiatedDate = undefined,
+        completedDate = undefined,
+        expirationDate = undefined
+    ) => {
+            try {
+                const { data, error, status } = await useAsyncData<Transaction[]>(`transactions`, () =>
+                    $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/transactions?paymentStatus.equals=${paymentStatus ?? transactionFilterStore.paymentStatus == 'NONE' ? '' : transactionFilterStore.paymentStatus}&page=${pageNumber ?? transactionFilterStore.pageNumber}&size=${pageSize ?? transactionFilterStore.pageSize}&sort=${sortBy ?? transactionFilterStore.sortBy}&transactionInitiator.equals=${transactionInitiator ?? transactionFilterStore.transactionInitiator == 'NONE' ? '' : transactionFilterStore.transactionInitiator}&amount.greaterThanOrEqual=${amountGreaterThanOrEqual ?? transactionFilterStore.amountGreaterThanOrEqual}&amount.lessThanOrEqual=${amountLessThanOrEqual ?? transactionFilterStore.amountLessThanOrEqual}&payerName.contains=${payerName ?? transactionFilterStore.payerName}&payerPhone.contains=${payerPhone ?? transactionFilterStore.payerPhone}&payerAccountNumber.contains=${payerAccountNumber ?? transactionFilterStore.payerAccountNumber}&payerId.contains=${payerId ?? transactionFilterStore.payerId}&paymentReference.contains=${paymentReference ?? transactionFilterStore.paymentReference}&dynamicId.contains=${dynamicId ?? transactionFilterStore.dynamicId}&mbTransactionId.contains=${mbTransactionId ?? transactionFilterStore.mbTransactionId}&coreTransactionId.contains=${coreTransactionId ?? transactionFilterStore.coreTransactionId}&merchantAccountNumber.contains=${merchantAccountNumber ?? transactionFilterStore.merchantAccountNumber}&merchantBranchId.equals=${merchantBranchId ?? transactionFilterStore.merchantBranchId}&merchantOperatorId.equals=${merchantOperatorId ?? transactionFilterStore.merchantOperatorId}&initiatedDate.equals=${initiatedDate ?? transactionFilterStore.initiatedDate}&completedDate.equals=${completedDate ?? transactionFilterStore.completedDate}&expirationDate.in=${expirationDate ?? transactionFilterStore.expirationDate}`, {
+                        headers: {
+                            Authorization: `Bearer ${store.accessToken}`,
+                        },
+                    })
+                );
+
+                if (status.value == "error") {
+                    console.log("Getting transactions error : ", error);
+                    toast({
+                        title: (error as any)?.value?.data?.title,
+                        description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
+                        variant: "destructive",
+                    });
+                    throw new Error("Getting transactions error: " + error.value?.message);
+                }
+
+                if (!data.value) {
+                    throw new Error("No transactions data received");
+                }
+
+                return data.value;
+
+            } catch (error) {
+                throw error;
+            } finally {
+                isLoading.value = false;
             }
-
-            if (!data.value) {
-                throw new Error("No transactions data received");
-            }
-
-            return data.value;
-
-        } catch (error) {
-            throw error;
-        } finally {
-            isLoading.value = false;
-        }
-    };
+        };
 
     const getTransactionById: (id: string) => Promise<Transaction> = async (id) => {
         try {
