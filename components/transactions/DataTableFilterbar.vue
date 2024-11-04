@@ -46,7 +46,7 @@ const clearFilter = () => {
   >
     <div class="flex items-center flex-wra self-start gap-4">
       <UiInput
-        placeholder="Filter by payer name"
+        :placeholder="$t('filter_by_payer_name')"
         v-model="transactionFilterStore.payerName"
         class="h-10 min-w-[150px] md:min-w-[200px] lg:min-w-[350px] w-fit rounded-full px-4"
         @keydown.enter="refetch"
@@ -60,7 +60,7 @@ const clearFilter = () => {
             name="material-symbols:filter-list"
             class="h-6 w-6 text-primary"
           ></Icon>
-          Advanced Filter
+          {{ $t("advanced_filter") }}
         </UiButton>
       </UiPopoverTrigger>
 
@@ -69,18 +69,18 @@ const clearFilter = () => {
 
     <UiPopoverContent class="space-y-5 rounded-xl w-full lg:p-6">
       <h1 class="lg:text-3xl md:text-2xl text-xl text-left font-medium">
-        Advanced search
+        {{ $t("advanced_search") }}
       </h1>
 
       <div
         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full flex-wrap gap-x-6 gap-y-4"
       >
         <div class="space-y-1">
-          <label for="payerAccountNumber" class="text-sm"
-            >Payer Account Number</label
-          >
+          <label for="payerAccountNumber" class="text-sm">{{
+            $t("payer_account_number")
+          }}</label>
           <UiInput
-            placeholder="Filter by payer account number"
+            :placeholder="$t('filter_by_payer_account_number')"
             v-model="transactionFilterStore.payerAccountNumber"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -88,9 +88,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="payerPhone" class="text-sm">Payer Phone Number</label>
+          <label for="payerPhone" class="text-sm">{{
+            $t("payer_phone_number")
+          }}</label>
           <UiInput
-            placeholder="Filter by payer phone number"
+            :placeholder="$t('filter_by_payer_phone_number')"
             v-model="transactionFilterStore.payerPhone"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -98,9 +100,9 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="payerId" class="text-sm">Payer ID</label>
+          <label for="payerId" class="text-sm">{{ $t("payer_id") }}</label>
           <UiInput
-            placeholder="Filter by payer ID"
+            :placeholder="$t('filter_by_payer_id')"
             v-model="transactionFilterStore.payerId"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -108,11 +110,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="amountGreaterThanOrEqual" class="text-sm"
-            >Amount greater than and enter</label
-          >
+          <label for="amountGreaterThanOrEqual" class="text-sm">{{
+            $t("amount_greater_than_or_equal")
+          }}</label>
           <UiInput
-            placeholder="Filter by amount greater than and enter"
+            :placeholder="$t('filter_by_amount_greater_than_or_equal')"
             v-model="transactionFilterStore.amountGreaterThanOrEqual"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -120,11 +122,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="amountLessThanOrEqual" class="text-sm"
-            >Amount less than and enter</label
-          >
+          <label for="amountLessThanOrEqual" class="text-sm">{{
+            $t("amount_less_than_or_equal")
+          }}</label>
           <UiInput
-            placeholder="Filter by amount less than and enter"
+            :placeholder="$t('filter_by_amount_less_than_or_equal')"
             v-model="transactionFilterStore.amountLessThanOrEqual"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -132,11 +134,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="paymentReference" class="text-sm"
-            >Payment Reference</label
-          >
+          <label for="paymentReference" class="text-sm">{{
+            $t("payment_reference")
+          }}</label>
           <UiInput
-            placeholder="Filter by payment reference"
+            :placeholder="$t('filter_by_payment_reference')"
             v-model="transactionFilterStore.paymentReference"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -144,9 +146,9 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="dynamicId" class="text-sm">Dynamic ID</label>
+          <label for="dynamicId" class="text-sm">{{ $t("dynamic_id") }}</label>
           <UiInput
-            placeholder="Filter by dynamic ID"
+            :placeholder="$t('filter_by_dynamic_id')"
             v-model="transactionFilterStore.dynamicId"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -154,11 +156,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="mbTransactionId" class="text-sm"
-            >Mobile Banking Transaction ID</label
-          >
+          <label for="mbTransactionId" class="text-sm">{{
+            $t("mobile_banking_transaction_id")
+          }}</label>
           <UiInput
-            placeholder="Filter by mobile banking transaction ID"
+            :placeholder="$t('filter_by_mobile_banking_transaction_id')"
             v-model="transactionFilterStore.mbTransactionId"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -166,11 +168,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="coreTransactionId" class="text-sm"
-            >Core Transaction ID</label
-          >
+          <label for="coreTransactionId" class="text-sm">{{
+            $t("core_transaction_id")
+          }}</label>
           <UiInput
-            placeholder="Filter by core transaction ID"
+            :placeholder="$t('filter_by_core_transaction_id')"
             v-model="transactionFilterStore.coreTransactionId"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -178,11 +180,11 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="merchantAccountNumber" class="text-sm"
-            >Merchant Account Number</label
-          >
+          <label for="merchantAccountNumber" class="text-sm">{{
+            $t("merchant_account_number")
+          }}</label>
           <UiInput
-            placeholder="Filter by merchant account number"
+            :placeholder="$t('filter_by_merchant_account_number')"
             v-model="transactionFilterStore.merchantAccountNumber"
             class="h-10 min-w-[250px] w-full"
             @keydown.enter="refetch"
@@ -190,14 +192,16 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="paymentStatus" class="text-sm">Payment Status</label>
+          <label for="paymentStatus" class="text-sm">{{
+            $t("payment_status")
+          }}</label>
           <UiSelect
             name="paymentStatus"
             v-model="transactionFilterStore.paymentStatus"
             @update:model-value="() => refetch()"
           >
             <UiSelectTrigger class="h-10 min-w-[150px] w-full">
-              <UiSelectValue placeholder="Filter by Payment Status" />
+              <UiSelectValue :placeholder="$t('filter_by_payment_status')" />
             </UiSelectTrigger>
             <UiSelectContent side="bottom">
               <UiSelectItem
@@ -212,16 +216,16 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="paymentInitiator" class="text-sm"
-            >Payment Initiator</label
-          >
+          <label for="paymentInitiator" class="text-sm">{{
+            $t("payment_initiator")
+          }}</label>
           <UiSelect
             name="paymentInitiator"
             v-model="transactionFilterStore.transactionInitiator"
             @update:model-value="() => refetch()"
           >
             <UiSelectTrigger class="h-10 w-full min-w-[150px]">
-              <UiSelectValue placeholder="Filter by Payment Initiator" />
+              <UiSelectValue :placeholder="$t('filter_by_payment_initiator')" />
             </UiSelectTrigger>
             <UiSelectContent side="bottom">
               <UiSelectItem
@@ -236,14 +240,14 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="branch" class="text-sm">Branch</label>
+          <label for="branch" class="text-sm">{{ $t("branch") }}</label>
           <UiSelect
             name="branch"
             v-model="transactionFilterStore.merchantBranchId"
             @update:model-value="() => refetch()"
           >
             <UiSelectTrigger class="h-10 min-w-[150px] w-full">
-              <UiSelectValue placeholder="Filter by Branch" />
+              <UiSelectValue :placeholder="$t('filter_by_branch')" />
             </UiSelectTrigger>
             <UiSelectContent side="bottom">
               <UiSelectItem
@@ -258,14 +262,14 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="operator" class="text-sm">Operator</label>
+          <label for="operator" class="text-sm">{{ $t("operator") }}</label>
           <UiSelect
             name="operator"
             v-model="transactionFilterStore.merchantOperatorId"
             @update:model-value="() => refetch()"
           >
             <UiSelectTrigger class="h-10 min-w-[150px] w-full">
-              <UiSelectValue placeholder="Filter by Operator" />
+              <UiSelectValue :placeholder="$t('filter_by_operator')" />
             </UiSelectTrigger>
             <UiSelectContent side="bottom">
               <UiSelectItem
@@ -280,7 +284,9 @@ const clearFilter = () => {
         </div>
 
         <div class="space-y-1">
-          <label for="initiatedDate" class="text-sm">Initiated Date</label>
+          <label for="initiatedDate" class="text-sm">{{
+            $t("initiated_date")
+          }}</label>
           <UiPopover>
             <UiPopoverTrigger asChild>
               <UiButton
@@ -296,7 +302,7 @@ const clearFilter = () => {
                         month: "long",
                         day: "numeric",
                       })
-                    : "Pick a date"
+                    : $t("pick_a_date")
                 }}
                 <CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
               </UiButton>
@@ -311,8 +317,11 @@ const clearFilter = () => {
             </UiPopoverContent>
           </UiPopover>
         </div>
+
         <div class="space-y-1">
-          <label for="completedDate" class="text-sm">Completed Date</label>
+          <label for="completedDate" class="text-sm">{{
+            $t("completed_date")
+          }}</label>
           <UiPopover>
             <UiPopoverTrigger asChild>
               <UiButton
@@ -328,7 +337,7 @@ const clearFilter = () => {
                         month: "long",
                         day: "numeric",
                       })
-                    : "Pick a date"
+                    : $t("pick_a_date")
                 }}
                 <CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
               </UiButton>
@@ -343,8 +352,11 @@ const clearFilter = () => {
             </UiPopoverContent>
           </UiPopover>
         </div>
+
         <div class="space-y-1">
-          <label for="expirationDate" class="text-sm">Expiration Date</label>
+          <label for="expirationDate" class="text-sm">{{
+            $t("expiration_date")
+          }}</label>
           <UiPopover>
             <UiPopoverTrigger asChild>
               <UiButton
@@ -360,7 +372,7 @@ const clearFilter = () => {
                         month: "long",
                         day: "numeric",
                       })
-                    : "Pick a date"
+                    : $t("pick_a_date")
                 }}
                 <CalendarIcon class="ml-auto h-4 w-4 opacity-50" />
               </UiButton>
@@ -377,8 +389,10 @@ const clearFilter = () => {
         </div>
 
         <div class="flex items-center gap-6 w-full justify-end col-span-full">
-          <UiButton variant="outline" @click="clearFilter">Clear</UiButton>
-          <UiButton @click="refetch">Apply</UiButton>
+          <UiButton variant="outline" @click="clearFilter">{{
+            $t("clear")
+          }}</UiButton>
+          <UiButton @click="refetch">{{ $t("apply") }}</UiButton>
         </div>
       </div>
     </UiPopoverContent>

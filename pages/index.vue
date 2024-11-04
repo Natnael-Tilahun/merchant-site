@@ -96,7 +96,9 @@ watch(
         <UiCardHeader
           class="flex flex-row items-center justify-between space-y-0 pb-2"
         >
-          <UiCardTitle class="text-sm font-medium"> Branches </UiCardTitle>
+          <UiCardTitle class="text-sm font-medium">
+            {{ $t("branches") }}
+          </UiCardTitle>
           <Icon
             name="material-symbols:home"
             size="18"
@@ -105,7 +107,9 @@ watch(
         </UiCardHeader>
         <UiCardContent>
           <div class="text-2xl font-bold">+{{ branchNumber }}</div>
-          <p class="text-xs text-muted-foreground">+10.1% from last month</p>
+          <p class="text-xs text-muted-foreground">
+            +10.1% {{ $t("from_last_month") }}
+          </p>
         </UiCardContent>
       </UiCard>
 
@@ -113,7 +117,9 @@ watch(
         <UiCardHeader
           class="flex flex-row items-center justify-between space-y-0 pb-2"
         >
-          <UiCardTitle class="text-sm font-medium"> Operators </UiCardTitle>
+          <UiCardTitle class="text-sm font-medium">
+            {{ $t("operators") }}
+          </UiCardTitle>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -131,7 +137,9 @@ watch(
         </UiCardHeader>
         <UiCardContent>
           <div class="text-2xl font-bold">+{{ employeeNumber }}</div>
-          <p class="text-xs text-muted-foreground">+19% from last month</p>
+          <p class="text-xs text-muted-foreground">
+            +19% {{ $t("from_last_month") }}
+          </p>
         </UiCardContent>
       </UiCard>
 
@@ -139,15 +147,17 @@ watch(
         <UiCardHeader
           class="flex flex-row items-center justify-between space-y-0 pb-2"
         >
-          <UiCardTitle class="text-sm font-medium">Transactions</UiCardTitle>
+          <UiCardTitle class="text-sm font-medium">
+            {{ $t("transactions") }}
+          </UiCardTitle>
           <NuxtLink to="/transactions/initiate" class="w-fit self-end">
             <UiButton
               size="sm"
               variant="outline"
-              class="w-fit self-end px-4 font-bold text-base rounded-full"
+              class="w-fit self-end px-4 font-bold text-base rounded-full bg-primary text-background"
             >
               <Icon name="material-symbols:add" size="28" class="mr-"></Icon>
-              New
+              {{ $t("new") }}
             </UiButton>
           </NuxtLink>
           <!-- <svg
@@ -170,11 +180,11 @@ watch(
               {{
                 isLoading
                   ? "Loading..."
-                  : `${totalTransactionAmount.toFixed(2)} Br`
+                  : `${totalTransactionAmount.toFixed(2)} ${$t("birr")}`
               }}
             </div>
             <p class="text-xs text-muted-foreground">
-              Total transaction amount
+              {{ $t("total_transaction_amount") }}
             </p>
           </div>
         </UiCardContent>
@@ -183,7 +193,9 @@ watch(
     <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
       <UiCard class="col-span-4 shadow-md rounded-xl dark:bg-gray-800">
         <UiCardHeader>
-          <UiCardTitle>Overview</UiCardTitle>
+          <UiCardTitle>
+            {{ $t("overview") }}
+          </UiCardTitle>
         </UiCardHeader>
         <UiCardContent class="pl-2">
           <DashboardOverview :transactionData="transactionData" />
@@ -193,16 +205,16 @@ watch(
         <UiCardHeader>
           <div class="flex justify-between w-full items-center">
             <div class="space-y-1">
-              <UiCardTitle>Recent Sales</UiCardTitle>
+              <UiCardTitle>{{ $t("recent_sales") }}</UiCardTitle>
               <UiCardDescription class="text-xs">
-                Your recent 5 transactions.
+                {{ $t("recent_5_transactions") }}
               </UiCardDescription>
             </div>
             <NuxtLink
               class="text-primary text-sm md:text-base"
               to="/transactions"
             >
-              View All
+              {{ $t("view_all") }}
             </NuxtLink>
           </div>
         </UiCardHeader>

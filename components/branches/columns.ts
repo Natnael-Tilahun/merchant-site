@@ -26,7 +26,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "merchantBranchId",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Branch Id" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("branch_id");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const merchantBranchId = row.getValue("merchantBranchId");
       return merchantBranchId ? h(
@@ -38,7 +42,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "branchName",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Branch Name" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("branch_name");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const branchName = row.getValue("branchName");
       return branchName ? h("p", branchName) : h("p", "-");
@@ -46,7 +54,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "branchCode",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Branch Code" }),
+      header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("branch_code");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const branchCode = row.getValue("branchCode");
       return branchCode ? h("p", branchCode) : h("p", "-");
@@ -54,7 +66,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "businessPhoneNumber",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Phone" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("phone_number");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const businessPhoneNumber = row.getValue("businessPhoneNumber");
       return businessPhoneNumber ? h("p", businessPhoneNumber) : h("p", "-");
@@ -62,7 +78,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "faxNumber",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Fax No" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("fax_no");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const faxNumber = row.getValue("faxNumber");
       return faxNumber ? h("p", faxNumber) : h("p", "-");
@@ -70,7 +90,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "address",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "City" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("city");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const city = (row.getValue("address") as Address).city;
       return city ? h("p", city) : h("p", "-");
@@ -78,7 +102,11 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "address",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Email" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("email");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const businessEmail = (row.getValue("address") as Address).businessEmail;
       return businessEmail ? h("p", businessEmail) : h("p", "-");
@@ -86,14 +114,22 @@ export const columns: ColumnDef<Branch>[] = [
   },
   {
     accessorKey: "address",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Postal No" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("postal_no");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const postalNumber = (row.getValue("address") as Address).postalNumber;
       return postalNumber ? h("p", postalNumber) : h("p", "-");
     },
   },
   {
-    header: "Actions",
+    header: () => {
+      const { t } = useI18n();
+      const title = t("actions");
+      return title;
+    },
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {

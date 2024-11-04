@@ -35,7 +35,9 @@ const onSubmit = form.handleSubmit((values: any) => {
       <div class="grid gap-4">
         <FormField v-slot="{ componentField }" name="email">
           <FormItem>
-            <FormLabel> Username or Email</FormLabel>
+            <FormLabel>
+              {{ $t("username") }} {{ $t("or") }} {{ $t("email") }}
+            </FormLabel>
             <FormControl>
               <UiInput
                 type="email"
@@ -50,7 +52,7 @@ const onSubmit = form.handleSubmit((values: any) => {
 
         <FormField v-slot="{ componentField }" name="newPassword">
           <FormItem>
-            <FormLabel>New Password</FormLabel>
+            <FormLabel>{{ $t("new_password") }}</FormLabel>
             <FormControl>
               <UiInput
                 type="text"
@@ -65,7 +67,7 @@ const onSubmit = form.handleSubmit((values: any) => {
 
         <FormField v-slot="{ componentField }" name="confirmPassword">
           <FormItem>
-            <FormLabel>Re-enter New Password</FormLabel>
+            <FormLabel>{{ $t("confirm_new_password") }}</FormLabel>
             <FormControl>
               <UiInput
                 type="text"
@@ -85,7 +87,7 @@ const onSubmit = form.handleSubmit((values: any) => {
             class="mr-2 h-4 w-4 animate-spin"
           ></Icon>
 
-          Reset Password
+          {{ $t("reset_password") }}
         </UiButton>
       </div>
     </form>

@@ -21,7 +21,7 @@ definePageMeta({
         )
       "
     >
-      Login
+      {{ $t("login") }}
     </NuxtLink>
     <div
       class="relative hidden h-screen flex-col bg-muted p-0 text-white dark:border-r lg:flex"
@@ -34,9 +34,11 @@ definePageMeta({
       <div class="absolute bottom-0 z-20 p-5 mt-auto">
         <blockquote class="space-y-2">
           <p class="text-lg text-secondary/80 contrast-200">
-            &ldquo;The Bank You Can Always Rely On&rdquo;
+            {{ $t("the_bank_you_can_always_rely_on") }}
           </p>
-          <footer class="text-sm">Commercial bank of Ethiopia</footer>
+          <footer class="text-sm">
+            {{ $t("commercial_bank_of_ethiopia") }}
+          </footer>
         </blockquote>
       </div>
     </div>
@@ -48,7 +50,7 @@ definePageMeta({
       >
         <div class="flex flex-col space-y-2 text-center">
           <h1 class="text-2xl font-semibold tracking-tight">
-            Create new password
+            {{ $t("create_new_password") }}
           </h1>
         </div>
         <ForgotPasswordForm />

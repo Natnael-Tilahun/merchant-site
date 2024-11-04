@@ -20,13 +20,13 @@ const otherInfoDatas = ref(otherInfoData as OtherInfoDataProps);
         value="otherInformation"
         class="md:text-lg py-3 data-[state=active]:border-b-4 data-[state=active]:border-b-primary data-[state=inactive]:bg-muted"
       >
-        Other Information
+        {{ $t("other_information") }}
       </UiTabsTrigger>
       <UiTabsTrigger
         value="jsonData"
         class="md:text-lg py-3 data-[state=active]:border-b-4 data-[state=active]:border-b-primary data-[state=inactive]:bg-muted"
       >
-        JSON Data
+        {{ $t("json_data") }}
       </UiTabsTrigger>
     </UiTabsList>
 

@@ -45,11 +45,10 @@ const onSubmit = form.handleSubmit(async (values: any) => {
   <div class="w-full h-full flex flex-col gap-8 px-5 md:px-10 lg:px-20 py-10">
     <div class="">
       <h1 class="md:text-2xl text-lg font-medium">
-        Create New Merchant Account
+        {{ $t("create_new_merchant_account") }}
       </h1>
       <p class="text-sm text-muted-foreground">
-        Create new merchant account by including Business Name, Business Number,
-        Trade License Number, core customer id, bussiness email and phone
+        {{ $t("create_new_merchant_account_description") }}
       </p>
     </div>
 
@@ -59,11 +58,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
           <div class="grid md:grid-cols-2 gap-6">
             <FormField v-slot="{ componentField }" name="businessName">
               <FormItem>
-                <FormLabel>Business Name </FormLabel>
+                <FormLabel>{{ $t("business_name") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter customer business Name"
+                    :placeholder="$t('enter_business_name')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -72,11 +71,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="businessPhoneNumber">
               <FormItem>
-                <FormLabel>Business Phone Number </FormLabel>
+                <FormLabel>{{ $t("business_phone_number") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter customer business phone number"
+                    :placeholder="$t('enter_business_phone_number')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -85,11 +84,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="businessNumber">
               <FormItem>
-                <FormLabel> Business Number </FormLabel>
+                <FormLabel>{{ $t("business_number") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter customer business number"
+                    :placeholder="$t('enter_business_number')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -98,11 +97,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="businessType">
               <FormItem>
-                <FormLabel> Business Type </FormLabel>
+                <FormLabel>{{ $t("business_type") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter customer business type"
+                    :placeholder="$t('enter_business_type')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -111,11 +110,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="city">
               <FormItem>
-                <FormLabel> City </FormLabel>
+                <FormLabel>{{ $t("city") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter city"
+                    :placeholder="$t('enter_city')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -124,11 +123,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="businessEmail">
               <FormItem>
-                <FormLabel>Business Email </FormLabel>
+                <FormLabel>{{ $t("business_email") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter business email"
+                    :placeholder="$t('enter_business_email')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -137,11 +136,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="postalNumber">
               <FormItem>
-                <FormLabel> Postal Number </FormLabel>
+                <FormLabel>{{ $t("postal_number") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter postal number"
+                    :placeholder="$t('enter_postal_number')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -150,11 +149,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="shortCode">
               <FormItem>
-                <FormLabel> Short Code </FormLabel>
+                <FormLabel>{{ $t("short_code") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter short code"
+                    :placeholder="$t('enter_short_code')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -163,11 +162,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="faxNumber">
               <FormItem>
-                <FormLabel> Fax Number </FormLabel>
+                <FormLabel>{{ $t("fax_number") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter fax number"
+                    :placeholder="$t('enter_fax_number')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -176,11 +175,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="tradeLicenseNumber">
               <FormItem>
-                <FormLabel> Trade License Number </FormLabel>
+                <FormLabel>{{ $t("trade_license_number") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter trade license number"
+                    :placeholder="$t('enter_trade_license_number')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -189,11 +188,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="tradeLicenseIssueDate">
               <FormItem>
-                <FormLabel> Trade License Issue Date </FormLabel>
+                <FormLabel>{{ $t("trade_license_issue_date") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="date"
-                    placeholder="Enter trade license Issue Date"
+                    :placeholder="$t('enter_trade_license_issue_date')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -205,11 +204,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               name="tradeLicenseExpiryDate"
             >
               <FormItem>
-                <FormLabel> Trade License Expiry Date </FormLabel>
+                <FormLabel>{{ $t("trade_license_expiry_date") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="date"
-                    placeholder="Enter trade license expiry date"
+                    :placeholder="$t('enter_trade_license_expiry_date')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -218,11 +217,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="taxPayerIdNumber">
               <FormItem>
-                <FormLabel> Tax Payer Id Number </FormLabel>
+                <FormLabel>{{ $t("tax_payer_id_number") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter tax payer id number"
+                    :placeholder="$t('enter_tax_payer_id_number')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -231,11 +230,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="taxPayerIssueDate">
               <FormItem>
-                <FormLabel> Tax Payer Issue Date </FormLabel>
+                <FormLabel>{{ $t("tax_payer_issue_date") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="date"
-                    placeholder="Enter tax payer issue date"
+                    :placeholder="$t('enter_tax_payer_issue_date')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -244,11 +243,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="taxPayerExpiryDate">
               <FormItem>
-                <FormLabel> Tax Payer Expiry Date </FormLabel>
+                <FormLabel>{{ $t("tax_payer_expiry_date") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="date"
-                    placeholder="Enter tax payer expiry date"
+                    :placeholder="$t('enter_tax_payer_expiry_date')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -263,7 +262,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                 type="button"
                 @click="$router.go(-1)"
               >
-                Cancel
+                {{ $t("cancel") }}
               </UiButton>
               <UiButton :disabled="isSubmitting" type="submit">
                 <Icon
@@ -272,7 +271,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                   class="mr-2 h-4 w-4 animate-spin"
                 ></Icon>
 
-                Submit
+                {{ $t("submit") }}
               </UiButton>
             </div>
           </div>

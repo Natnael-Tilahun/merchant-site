@@ -41,10 +41,10 @@ const clearAllFilters = () => {
   <UiCard
     class="flex flex-col gap-2 w-full lg:w-1/2 rounded-lg p-4 md:p-6 border-[1px] mb-6 h-full justify-between"
   >
-    <h1 class="text-left pb-2">Search Customer By</h1>
+    <h1 class="text-left pb-2">{{ $t("search_operator_by") }}</h1>
     <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-6">
       <UiInput
-        placeholder="Phone Number"
+        :placeholder="$t('phone_number')"
         :model-value="(table.getColumn('customerPhone')?.getFilterValue() as string) ?? ''"
         class="h-10"
         @input="
@@ -53,7 +53,7 @@ const clearAllFilters = () => {
         ref="customerPhone"
       />
       <UiInput
-        placeholder="Account Number"
+        :placeholder="$t('account_number')"
         :model-value="(table.getColumn('accountNumber')?.getFilterValue() as string) ?? ''"
         class="h-10"
         @input="

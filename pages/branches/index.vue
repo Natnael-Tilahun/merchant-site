@@ -38,13 +38,17 @@ const refetch = async () => {
   <div class="flex flex-col space-y-8 mx-auto">
     <div class="flex justify-between pt-4">
       <div>
-        <h1 class="md:text-2xl text-lg font-medium">Branches</h1>
-        <p class="text-sm text-muted-foreground">View and manage branches</p>
+        <h1 class="md:text-2xl text-lg font-medium">
+          {{ $t("branches") }}
+        </h1>
+        <p class="text-sm text-muted-foreground">
+          {{ $t("view_and_manage_branches") }}
+        </p>
       </div>
       <NuxtLink to="/branches/new" class="w-fit self-end">
         <UiButton class="w-fit self-end px-5"
-          ><Icon name="material-symbols:add" size="24" class="mr-2"></Icon>Add
-          Branch</UiButton
+          ><Icon name="material-symbols:add" size="24" class="mr-2"></Icon>
+          {{ $t("add_branch") }}</UiButton
         >
       </NuxtLink>
     </div>
@@ -56,7 +60,7 @@ const refetch = async () => {
         <template v-slot:toolbar="{ table }">
           <div class="flex flex-1 items-center space-x-2">
             <UiInput
-              placeholder="Filter by branch name"
+              :placeholder="$t('filter_by_branch_name')"
               :model-value="(table?.getColumn('branchName')?.getFilterValue() as string) ?? ''"
               class="h-8 w-[150px] lg:w-[250px]"
               @input="
@@ -70,7 +74,7 @@ const refetch = async () => {
       </UiDataTable>
     </UiCard>
     <div v-else-if="isError">
-      <UiErrorMessage :retry="refetch" title="Something went wrong." />
+      <UiErrorMessage :retry="refetch" :title="$t('something_went_wrong')" />
     </div>
   </div>
 </template>

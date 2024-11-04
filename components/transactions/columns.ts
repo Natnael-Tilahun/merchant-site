@@ -24,7 +24,11 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "merchantTransactionId",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Transaction ID" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("transaction_id");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const merchantTransactionId = row.getValue("merchantTransactionId");
       return merchantTransactionId ? h(
@@ -36,7 +40,11 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "payerName",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Payer Name" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("payer_name");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const payerName = row.getValue("payerName");
       return payerName ? h("p", payerName) : h("p", "-");
@@ -44,7 +52,11 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "payerAccountNumber",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Payer Account Number" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("payer_account_number");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const payerAccountNumber = row.getValue("payerAccountNumber");
       return payerAccountNumber ? h("p", payerAccountNumber) : h("p", "-");
@@ -52,36 +64,67 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "amount",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Amount" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("amount");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
   },
   {
     accessorKey: "tipAmount",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "tipAmount" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("tip_amount");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
   },
   {
     accessorKey: "currencyCode",
-    header: ({ column }) =>
-      h(DataTableColumnHeaderVue, { column, title: "currencyCode" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("currency_code");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
   },
   {
     accessorKey: "paymentStatus",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "paymentStatus" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("payment_status");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
   },
   {
     accessorKey: "paymentReference",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "paymentReference" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("payment_reference");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
   },
   {
     accessorKey: "transactionInitiator",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "transactionInitiator" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("transaction_initiator");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
   },
   {
     accessorKey: "expirationDate",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Expiration Date" }),
+      header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("expiration_date");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => new Date(row.getValue("expirationDate")).toLocaleDateString(),
   },
   {
-    header: "Actions",
+    header: () => {
+      const { t } = useI18n();
+      const title = t("actions");
+      return title;
+    },
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {

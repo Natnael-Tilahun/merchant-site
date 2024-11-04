@@ -43,9 +43,11 @@ const navigateToPrintTransactions = () => {
   <div class="w-full min-h-screen flex flex-col gap-8">
     <div class="flex justify-between pt-4">
       <div>
-        <h1 class="md:text-2xl text-lg font-medium">Transactions</h1>
+        <h1 class="md:text-2xl text-lg font-medium">
+          {{ $t("transactions") }}
+        </h1>
         <p class="text-sm text-muted-foreground">
-          View and manage transactions
+          {{ $t("view_and_manage_transactions") }}
         </p>
       </div>
       <div class="flex flex-col md:flex-row gap-4">
@@ -53,13 +55,13 @@ const navigateToPrintTransactions = () => {
           class="w-fit self-end px-5"
           @click="navigateToPrintTransactions"
           ><Icon name="material-symbols:download" size="24" class="mr-2"></Icon
-          >Download Transactions</UiButton
+          >{{ $t("download_transactions") }}</UiButton
         >
 
         <NuxtLink to="/transactions/initiate" class="w-fit self-end">
           <UiButton class="w-fit self-end px-5"
             ><Icon name="material-symbols:add" size="24" class="mr-2"></Icon
-            >Initiate Transaction</UiButton
+            >{{ $t("initiate_transaction") }}</UiButton
           >
         </NuxtLink>
       </div>
@@ -77,7 +79,7 @@ const navigateToPrintTransactions = () => {
     </UiCard>
 
     <div v-else-if="isError">
-      <UiErrorMessage :retry="refetch" title="Something went wrong." />
+      <UiErrorMessage :retry="refetch" :title="$t('something_went_wrong')" />
     </div>
   </div>
 </template>

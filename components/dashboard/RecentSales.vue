@@ -114,10 +114,10 @@ const getInitials = (name: string) =>
       </UiAvatar>
       <div class="ml-4 space-y-1">
         <p class="text-sm font-medium leading-none">
-          {{ item.payerName || "Payer Name" }}
+          {{ item.payerName || $t("payer_name") }}
         </p>
         <p class="text-sm text-muted-foreground">
-          {{ item.payerAccountNumber || "Payer Account Number" }}
+          {{ item.payerAccountNumber || $t("payer_account_number") }}
         </p>
       </div>
       <div class="ml-auto font-medium">

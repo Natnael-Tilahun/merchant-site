@@ -56,9 +56,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 <template>
   <div class="w-full h-full flex flex-col gap-8">
     <div class="pt-4">
-      <h1 class="md:text-2xl text-lg font-medium">Reset Operator Password</h1>
+      <h1 class="md:text-2xl text-lg font-medium">
+        {{ $t("reset_operator_password") }}
+      </h1>
       <p class="text-sm text-muted-foreground">
-        Update the password by entering new password
+        {{ $t("reset_operator_password_description") }}
       </p>
     </div>
 
@@ -72,13 +74,13 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               name="merchantOperatorId"
             >
               <FormItem>
-                <FormLabel>Merchant Operator Id </FormLabel>
+                <FormLabel>{{ $t("merchant_operator_id") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
                     disabled
                     class="border-2 bg-muted dark:border-gray-700 dark:bg-gray-600"
-                    placeholder="Enter merchant operator Id"
+                    :placeholder="$t('enter_merchant_operator_id')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -87,11 +89,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="newPassword">
               <FormItem>
-                <FormLabel>newPassword </FormLabel>
+                <FormLabel>{{ $t("new_password") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter new password"
+                    :placeholder="$t('enter_new_password')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -106,7 +108,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                 type="button"
                 @click="$router.go(-1)"
               >
-                Cancel
+                {{ $t("cancel") }}
               </UiButton>
               <UiButton :disabled="isSubmitting" type="submit">
                 <Icon
@@ -115,7 +117,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                   class="mr-2 h-4 w-4 animate-spin"
                 ></Icon>
 
-                Update
+                {{ $t("update") }}
               </UiButton>
             </div>
           </div>
