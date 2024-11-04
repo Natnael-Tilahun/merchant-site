@@ -39,7 +39,9 @@ function formatAccountNumber(accountId: string) {
             class="grid gap-4 grid-cols-2 content-between py-6 text-white"
           >
             <div>
-              <p class="font-light text-gray-200 text-base">Account:</p>
+              <p class="font-light text-gray-200 text-base">
+                {{ $t("account") }}:
+              </p>
               <div class="items-center flex gap-4">
                 <p class="text-lg font-medium">
                   {{
@@ -65,7 +67,7 @@ function formatAccountNumber(accountId: string) {
 
             <div class="text-right">
               <p class="font-light text-gray-200 text-base">
-                Payment Reference:
+                {{ $t("payment_reference") }}:
               </p>
               <p class="text-lg font-medium">
                 {{ props.data?.paymentReference }}
@@ -73,12 +75,16 @@ function formatAccountNumber(accountId: string) {
             </div>
 
             <div>
-              <p class="font-light text-gray-200 text-base">Amount:</p>
+              <p class="font-light text-gray-200 text-base">
+                {{ $t("payment_amount") }}:
+              </p>
               <p class="text-lg font-medium">{{ props.data?.amount }} Br.</p>
             </div>
 
             <div class="text-right">
-              <p class="font-light text-gray-200 text-base">Dynamic Id:</p>
+              <p class="font-light text-gray-200 text-base">
+                {{ $t("dynamic_id") }}:
+              </p>
               <p class="text-lg font-medium">
                 {{ props.data?.dynamicId }}
               </p>

@@ -129,6 +129,7 @@ const closeMenuNav = () => {
           </div>
 
           <div class="ml-auto flex items-center space-x-2 md:space-x-5">
+            <HeaderLanguageSwitcher />
             <UiButton
               variant="ghost"
               size="icon"
@@ -189,7 +190,9 @@ const closeMenuNav = () => {
 
           <h1 class="text-sm md:text-lg md:block space-x-2">
             <template v-if="pathSegments.length == 0">
-              <router-link to="/" class="font-bold">Dashboard</router-link>
+              <router-link to="/" class="font-bold">{{
+                $t("dashboard")
+              }}</router-link>
             </template>
 
             <template v-if="pathSegments.length > 0">
@@ -200,7 +203,7 @@ const closeMenuNav = () => {
 
                 <template v-if="segment">
                   <NuxtLink class="font-light" :to="generateLink(index)">
-                    {{ capitalizeRouteName(segment) }}
+                    {{ $t(segment) }}
                   </NuxtLink>
                 </template>
               </span>

@@ -41,9 +41,11 @@ const refetch = async () => {
           data[0]?.merchantBranch.branchName &&
           "Branch" + data[0]?.merchantBranch.branchName
         }}
-        Operators
+        {{ $t("operators") }}
       </h1>
-      <p class="text-sm text-muted-foreground">View and manage operators</p>
+      <p class="text-sm text-muted-foreground">
+        {{ $t("view_and_manage_operators") }}
+      </p>
     </div>
 
     <div v-if="isLoading" class="py-10 flex justify-center w-full">
@@ -55,7 +57,7 @@ const refetch = async () => {
         <template v-slot:toolbar="{ table }">
           <div class="flex flex-1 items-center space-x-2">
             <UiInput
-              placeholder="Filter by operator name"
+              :placeholder="$t('filter_by_operator_name')"
               :model-value="(table?.getColumn('fullName')?.getFilterValue() as string) ?? ''"
               class="h-8 w-[150px] lg:w-[250px]"
               @input="
@@ -70,7 +72,7 @@ const refetch = async () => {
     </UiCard>
 
     <div v-else-if="isError">
-      <UiErrorMessage :retry="refetch" title="Something went wrong." />
+      <UiErrorMessage :retry="refetch" :title="$t('something_went_wrong')" />
     </div>
   </div>
 </template>

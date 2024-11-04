@@ -24,9 +24,11 @@ definePageMeta({
       <div class="absolute bottom-0 z-20 p-5 mt-auto">
         <blockquote class="space-y-2">
           <p class="text-lg text-secondary/80 contrast-200">
-            &ldquo;The Bank You Can Always Rely On&rdquo;
+            {{ $t("the_bank_you_can_always_rely_on") }}
           </p>
-          <footer class="text-sm">Commercial bank of Ethiopia</footer>
+          <footer class="text-sm">
+            {{ $t("commercial_bank_of_ethiopia") }}
+          </footer>
         </blockquote>
       </div>
     </div>
@@ -39,7 +41,9 @@ definePageMeta({
         class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]"
       >
         <div class="flex flex-col space-y-2 text-center">
-          <h1 class="text-2xl font-semibold tracking-tight">Login</h1>
+          <h1 class="text-2xl font-semibold tracking-tight">
+            {{ $t("login") }}
+          </h1>
           <!-- <p class="text-sm text-muted-foreground">
             Enter your email(username) and password below to login
           </p> -->
@@ -51,14 +55,14 @@ definePageMeta({
             href="/terms"
             class="underline underline-offset-4 hover:text-primary"
           >
-            Terms of Service
+            {{ $t("terms_and_conditions") }}
           </a>
           and
           <a
             href="/privacy"
             class="underline underline-offset-4 hover:text-primary"
           >
-            Privacy Policy
+            {{ $t("privacy_policy") }}
           </a>
           .
         </p>

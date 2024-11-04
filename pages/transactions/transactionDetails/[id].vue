@@ -25,8 +25,12 @@ const formatDate = (date: string) => {
 <template>
   <div class="w-full flex flex-col gap-8">
     <div class="pt-4">
-      <h1 class="md:text-2xl text-lg font-medium">Transaction Details</h1>
-      <p class="text-sm text-muted-foreground">View transaction information</p>
+      <h1 class="md:text-2xl text-lg font-medium">
+        {{ $t("transaction_details") }}
+      </h1>
+      <p class="text-sm text-muted-foreground">
+        {{ $t("view_transaction_information") }}
+      </p>
     </div>
 
     <UiCard v-if="isLoading" class="p-6">
@@ -136,7 +140,9 @@ const formatDate = (date: string) => {
     </UiCard>
 
     <UiCard v-else class="p-6">
-      <p class="text-center text-muted-foreground">Transaction not found.</p>
+      <p class="text-center text-muted-foreground">
+        {{ $t("transaction_not_found") }}
+      </p>
     </UiCard>
   </div>
 </template>

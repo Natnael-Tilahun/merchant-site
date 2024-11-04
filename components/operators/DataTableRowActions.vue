@@ -57,21 +57,21 @@ async function deleteEmployees(id: string) {
     <UiDropdownMenuContent align="end" class="w-[160px]">
       <UiDropdownMenuItem
         @click="viewEmployeeDetail(row.original.merchantOperatorId)"
-        >View Operator</UiDropdownMenuItem
+        >{{ $t("view_operator") }}</UiDropdownMenuItem
       >
       <UiDropdownMenuItem
         @click="viewTransactionHistory(row.original.merchantOperatorId)"
-        >Transaction History</UiDropdownMenuItem
+        >{{ $t("transaction_history") }}</UiDropdownMenuItem
       >
       <UiDropdownMenuItem
         @click="resetEmployeePassword(row.original.merchantOperatorId)"
-        >Reset Password</UiDropdownMenuItem
+        >{{ $t("reset_password") }}</UiDropdownMenuItem
       >
       <UiDropdownMenuItem
         @click="deleteEmployees(row.original.merchantOperatorId)"
         class="text-red-600"
       >
-        Delete
+        {{ $t("delete") }}
         <UiDropdownMenuShortcut>⌘⌫</UiDropdownMenuShortcut>
       </UiDropdownMenuItem>
     </UiDropdownMenuContent>

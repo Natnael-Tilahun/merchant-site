@@ -41,15 +41,17 @@ const onSubmit = form.handleSubmit(async (values: any) => {
     <form @submit="onSubmit">
       <div class="flex flex-col justify-betwee h-full gap-4 md:gap-6">
         <div class="md:space-y-6 space-y-4">
-          <p class="font-semibold text-xl text-center">Send Push USSD</p>
+          <p class="font-semibold text-xl text-center">
+            {{ $t("send_push_ussd") }}
+          </p>
           <FormField v-slot="{ componentField }" name="customerPhone">
             <FormItem>
-              <FormLabel> Phone No.</FormLabel>
+              <FormLabel>{{ $t("phone_number") }}</FormLabel>
               <FormControl>
                 <UiInput
                   type="text"
                   class="h-10"
-                  placeholder="100012345678"
+                  placeholder="0911111111"
                   v-bind="componentField"
                   :disabled="isLoading"
                 />
@@ -68,7 +70,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             class="mr-2 h-4 w-4 animate-spin"
           ></Icon>
 
-          Send Push USSD
+          {{ $t("send_push_ussd") }}
         </UiButton>
       </div>
     </form>

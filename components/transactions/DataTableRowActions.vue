@@ -25,7 +25,7 @@ function viewTransactionDetail(id: string) {
     <UiDropdownMenuContent align="end" class="w-[160px]">
       <UiDropdownMenuItem
         @click="viewTransactionDetail(row.original.merchantTransactionId)"
-        >View</UiDropdownMenuItem
+        >{{ $t("view") }}</UiDropdownMenuItem
       >
     </UiDropdownMenuContent>
   </UiDropdownMenu>

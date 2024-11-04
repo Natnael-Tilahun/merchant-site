@@ -29,9 +29,57 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@pinia/nuxt",
     // "@nuxt/image",
-    "@pinia-plugin-persistedstate/nuxt"
+    "@pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/i18n",
   ],
 
+  i18n: {
+    defaultLocale: "en",
+    strategy: "no_prefix",
+    locales: [
+      {
+        code: "en",
+        name: "English",
+        file: "en.json",
+      },
+      {
+        code: "amh",
+        name: "Amharic",
+        file: "amh.json",
+      },
+      {
+        code: "orm",
+        name: "Afaan Oromo",
+        file: "orm.json",
+      },
+      {
+        code: "tir",
+        name: "Tigrinya",
+        file: "tir.json",
+      },
+      {
+        code: "som",
+        name: "Somali",
+        file: "som.json",
+      },
+      {
+        code: "aar",
+        name: "Afar",
+        file: "aar.json",
+      },
+    ],
+    lazy: true,
+    fallbackLocale: "en",
+    missingWarn: false,
+    fallbackWarn: false,
+    missing: "default",
+    // langDir: "i18n/locales",
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: "i18n_redirected",
+      redirectOn: "root",
+    },
+  },
   pinia: {
     storesDirs: ["./stores/**", "./custom-folder/stores/**"],
   },

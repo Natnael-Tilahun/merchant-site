@@ -67,10 +67,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 <template>
   <div class="w-full h-full flex flex-col gap-8">
     <div class="pt-4">
-      <h1 class="md:text-2xl text-lg font-medium">Create New Operator</h1>
+      <h1 class="md:text-2xl text-lg font-medium">
+        {{ $t("create_new_operator") }}
+      </h1>
       <p class="text-sm text-muted-foreground">
-        Create new operator by including First Name, Last Name, Username,
-        Password, Branch Id
+        {{ $t("create_new_operator_description") }}
       </p>
     </div>
 
@@ -80,11 +81,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
           <div class="grid md:grid-cols-2 gap-6">
             <FormField v-slot="{ componentField }" name="firstName">
               <FormItem>
-                <FormLabel>First Name </FormLabel>
+                <FormLabel>{{ $t("first_name") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter first name"
+                    :placeholder="$t('enter_first_name')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -93,11 +94,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="middleName">
               <FormItem>
-                <FormLabel>Middle Name </FormLabel>
+                <FormLabel>{{ $t("middle_name") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter middle name"
+                    :placeholder="$t('enter_middle_name')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -106,11 +107,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="username">
               <FormItem>
-                <FormLabel> Username </FormLabel>
+                <FormLabel>{{ $t("username") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter username"
+                    :placeholder="$t('enter_username')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -119,11 +120,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="password">
               <FormItem>
-                <FormLabel> Password </FormLabel>
+                <FormLabel>{{ $t("password") }} </FormLabel>
                 <FormControl>
                   <UiInput
                     type="text"
-                    placeholder="Enter password"
+                    :placeholder="$t('enter_password')"
                     v-bind="componentField"
                   />
                 </FormControl>
@@ -132,12 +133,14 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
             <FormField v-slot="{ componentField }" name="operatorRole">
               <FormItem>
-                <FormLabel>Operator Role</FormLabel>
+                <FormLabel>{{ $t("operator_role") }} </FormLabel>
 
                 <UiSelect v-bind="componentField">
                   <FormControl>
                     <UiSelectTrigger>
-                      <UiSelectValue placeholder="Select operator role" />
+                      <UiSelectValue
+                        :placeholder="$t('select_operator_role')"
+                      />
                     </UiSelectTrigger>
                   </FormControl>
                   <UiSelectContent>
@@ -158,12 +161,12 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 
             <FormField v-slot="{ componentField }" name="branchId">
               <FormItem>
-                <FormLabel>Branch Id</FormLabel>
+                <FormLabel>{{ $t("operator_branch") }} </FormLabel>
 
                 <UiSelect v-bind="componentField">
                   <FormControl>
                     <UiSelectTrigger>
-                      <UiSelectValue placeholder="Select branch" />
+                      <UiSelectValue :placeholder="$t('select_branch')" />
                     </UiSelectTrigger>
                   </FormControl>
                   <UiSelectContent>
@@ -189,7 +192,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                 type="button"
                 @click="$router.go(-1)"
               >
-                Cancel
+                {{ $t("cancel") }}
               </UiButton>
               <UiButton :disabled="isSubmitting" type="submit">
                 <Icon
@@ -198,7 +201,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                   class="mr-2 h-4 w-4 animate-spin"
                 ></Icon>
 
-                Submit
+                {{ $t("submit") }}
               </UiButton>
             </div>
           </div>

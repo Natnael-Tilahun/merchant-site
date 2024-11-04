@@ -27,8 +27,10 @@ const onSubmit = form.handleSubmit((values: any) => {
 <template>
   <div class="w-full flex flex-col gap-8">
     <div>
-      <h1 class="md:text-2xl text-lg font-medium">Settings</h1>
-      <p class="text-sm text-muted-foreground">Update your settings here</p>
+      <h1 class="md:text-2xl text-lg font-medium">{{ $t("settings") }}</h1>
+      <p class="text-sm text-muted-foreground">
+        {{ $t("update_your_settings_here") }}
+      </p>
     </div>
 
     <UiCard class="p-6">
@@ -36,11 +38,11 @@ const onSubmit = form.handleSubmit((values: any) => {
         <div class="grid md:grid-cols-2 gap-6">
           <FormField v-slot="{ componentField }" name="currentPassword">
             <FormItem>
-              <FormLabel> Current Password </FormLabel>
+              <FormLabel>{{ $t("current_password") }} </FormLabel>
               <FormControl>
                 <UiInput
                   type="text"
-                  placeholder="Enter Current Password"
+                  :placeholder="$t('enter_current_password')"
                   v-bind="componentField"
                 />
               </FormControl>
@@ -49,11 +51,11 @@ const onSubmit = form.handleSubmit((values: any) => {
           </FormField>
           <FormField v-slot="{ componentField }" name="newPassword">
             <FormItem>
-              <FormLabel> New Password </FormLabel>
+              <FormLabel>{{ $t("new_password") }} </FormLabel>
               <FormControl>
                 <UiInput
                   type="text"
-                  placeholder="Enter New Password"
+                  :placeholder="$t('enter_new_password')"
                   v-bind="componentField"
                 />
               </FormControl>
@@ -62,11 +64,11 @@ const onSubmit = form.handleSubmit((values: any) => {
           </FormField>
           <FormField v-slot="{ componentField }" name="confirmPassword">
             <FormItem>
-              <FormLabel> Confirm New Password </FormLabel>
+              <FormLabel>{{ $t("confirm_new_password") }} </FormLabel>
               <FormControl>
                 <UiInput
                   type="text"
-                  placeholder="Confirm New Password"
+                  :placeholder="$t('confirm_new_password')"
                   v-bind="componentField"
                 />
               </FormControl>
@@ -81,7 +83,7 @@ const onSubmit = form.handleSubmit((values: any) => {
               size="lg"
               @click="$router.go(-1)"
             >
-              Cancel
+              {{ $t("cancel") }}
             </UiButton>
             <UiButton :disabled="isLoading" size="lg" type="submit">
               <Icon
@@ -90,7 +92,7 @@ const onSubmit = form.handleSubmit((values: any) => {
                 class="mr-2 h-4 w-4 animate-spin"
               ></Icon>
 
-              Update
+              {{ $t("update") }}
             </UiButton>
           </div>
         </div>

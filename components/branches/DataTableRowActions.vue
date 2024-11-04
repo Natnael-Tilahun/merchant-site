@@ -57,20 +57,21 @@ async function deleteMerchants(id: string) {
     <UiDropdownMenuContent align="end" class="w-[160px]">
       <UiDropdownMenuItem
         @click="viewBranchDetail(row.original.merchantBranchId)"
-        >View Branch</UiDropdownMenuItem
+        >{{ $t("view_branch") }}</UiDropdownMenuItem
       >
       <UiDropdownMenuItem
         @click="viewTransactionHistory(row.original.merchantBranchId)"
-        >Transaction History</UiDropdownMenuItem
+        >{{ $t("transaction_history") }}</UiDropdownMenuItem
       >
-      <UiDropdownMenuItem @click="viewOperators(row.original.merchantBranchId)"
-        >Operators</UiDropdownMenuItem
+      <UiDropdownMenuItem
+        @click="viewOperators(row.original.merchantBranchId)"
+        >{{ $t("operators") }}</UiDropdownMenuItem
       >
       <UiDropdownMenuItem
         @click="deleteMerchants(row.original.merchantBranchId)"
         class="text-red-600"
       >
-        Delete
+        {{ $t("delete") }}
         <UiDropdownMenuShortcut>⌘⌫</UiDropdownMenuShortcut>
       </UiDropdownMenuItem>
     </UiDropdownMenuContent>

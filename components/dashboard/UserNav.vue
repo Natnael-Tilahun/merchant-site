@@ -45,7 +45,7 @@ const { username, email } = useAuthStore();
       <UiDropdownMenuGroup>
         <NuxtLink to="/profile">
           <UiDropdownMenuItem>
-            Profile
+            {{ $t("profile") }}
             <UiDropdownMenuShortcut>⇧⌘P</UiDropdownMenuShortcut>
           </UiDropdownMenuItem>
         </NuxtLink>

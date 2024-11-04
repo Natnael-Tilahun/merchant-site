@@ -46,11 +46,13 @@ const onSubmit = form.handleSubmit(async (values: any) => {
       <div class="grid gap-3">
         <FormField v-slot="{ componentField }" name="username">
           <FormItem>
-            <FormLabel> Username or Email</FormLabel>
+            <FormLabel>
+              {{ $t("username") }} {{ $t("or") }} {{ $t("email") }}
+            </FormLabel>
             <FormControl>
               <UiInput
                 type="text"
-                placeholder="username"
+                :placeholder="$t('username')"
                 v-bind="componentField"
                 :disabled="isLoading"
                 aria-autocomplete="username"
@@ -62,7 +64,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 
         <FormField v-slot="{ componentField }" name="password">
           <FormItem>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{{ $t("password") }}</FormLabel>
             <FormControl>
               <div
                 className="relative flex items-center bg-input rounded-lg pl- focus-within:ring-1 focus-within:ring-primary"
@@ -106,7 +108,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                 <UiCheckbox :checked="value" @update:checked="handleChange" />
               </FormControl>
               <div class="space-y-1 leading-none">
-                <FormLabel>Remember Me</FormLabel>
+                <FormLabel>{{ $t("remember_me") }}</FormLabel>
                 <FormMessage />
               </div>
             </FormItem>
@@ -115,7 +117,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             to="/forgotPassword"
             class="text-primary text-right text-sm"
           >
-            Forgot Password?
+            {{ $t("forgot_password") }}?
           </NuxtLink>
         </div>
         <UiButton :disabled="isLoading">
@@ -125,7 +127,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             class="mr-2 h-4 w-4 animate-spin"
           ></Icon>
 
-          Sign In
+          {{ $t("sign_in") }}
         </UiButton>
       </div>
     </form>
@@ -143,7 +145,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
         v-if="isLoading"
         class="mr-2 h-4 w-4 animate-spin"
       ></Icon>
-      Register as a merchant
+      {{ $t("register_as_a_merchant") }}
     </UiButton>
   </div>
 </template>

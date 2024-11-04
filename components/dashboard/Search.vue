@@ -4,7 +4,7 @@
   <div>
     <UiInput
       type="search"
-      placeholder="Search..."
+      :placeholder="$t('search')"
       class="md:w-fit lg:w-[300px]"
     />
   </div>

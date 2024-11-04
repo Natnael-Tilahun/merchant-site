@@ -46,8 +46,12 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 <template>
   <div class="w-full h-full flex flex-col gap-8">
     <div class="pt-4">
-      <h1 class="md:text-2xl text-lg font-medium">Initiate Transaction</h1>
-      <p class="text-sm text-muted-foreground">Create a new transaction</p>
+      <h1 class="md:text-2xl text-lg font-medium">
+        {{ $t("initiate_transaction") }}
+      </h1>
+      <p class="text-sm text-muted-foreground">
+        {{ $t("initiate_transaction_description") }}
+      </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 h-full">
@@ -62,11 +66,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
         <form @submit="onSubmit" class="space-y-4">
           <FormField v-slot="{ componentField }" name="amount">
             <FormItem>
-              <FormLabel>Amount</FormLabel>
+              <FormLabel>{{ $t("payment_amount") }}</FormLabel>
               <FormControl>
                 <UiInput
                   type="number"
-                  placeholder="Enter amount"
+                  :placeholder="$t('enter_payment_amount')"
                   v-bind="componentField"
                 />
               </FormControl>
@@ -76,11 +80,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 
           <FormField v-slot="{ componentField }" name="paymentReference">
             <FormItem>
-              <FormLabel>Payment Reference</FormLabel>
+              <FormLabel>{{ $t("payment_reference") }}</FormLabel>
               <FormControl>
                 <UiInput
                   type="text"
-                  placeholder="Enter payment reference"
+                  :placeholder="$t('enter_payment_reference')"
                   v-bind="componentField"
                 />
               </FormControl>
@@ -89,7 +93,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
           </FormField>
 
           <UiButton type="submit" :disabled="isLoading">
-            {{ isLoading ? "Initiating..." : "Initiate Transaction" }}
+            {{ isLoading ? $t("initiating") : $t("initiate_transaction") }}
           </UiButton>
         </form>
       </UiCard>

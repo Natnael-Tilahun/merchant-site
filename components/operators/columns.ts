@@ -25,7 +25,11 @@ export const columns: ColumnDef<Employee>[] = [
   },
   {
     accessorKey: "merchantOperatorId",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Operator Id" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("merchant_operator_id");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const merchantOperatorId = row.getValue("merchantOperatorId");
       return merchantOperatorId ? h(
@@ -37,7 +41,11 @@ export const columns: ColumnDef<Employee>[] = [
   },
   {
     accessorKey: "fullName",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Full Name" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("full_name");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const fullName = row.getValue("fullName");
       return fullName ? h("p", fullName) : h("p", "-");
@@ -45,7 +53,11 @@ export const columns: ColumnDef<Employee>[] = [
   },
   {
     accessorKey: "operatorRole",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Operator Role" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("operator_role");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const operatorRole = row.getValue("operatorRole");
       return operatorRole ? h("p", operatorRole) : h("p", "-");
@@ -53,7 +65,11 @@ export const columns: ColumnDef<Employee>[] = [
   },
   {
     accessorKey: "merchantBranch",
-    header: ({ column }) => h(DataTableColumnHeaderVue, { column, title: "Merchant Branch" }),
+    header: ({ column }) => {
+      const { t } = useI18n();
+      const title = t("merchant_branch");
+      return h(DataTableColumnHeaderVue, { column, title });
+    },
     cell: ({ row }) => {
       const merchantBranch = row.getValue("merchantBranch");
       return merchantBranch ? h(
@@ -65,7 +81,11 @@ export const columns: ColumnDef<Employee>[] = [
     },
   },
   {
-    header: "Actions",
+    header: () => {
+      const { t } = useI18n();
+      const title = t("actions");
+      return title;
+    },
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
