@@ -2,7 +2,8 @@ import type { ColumnDef } from "@tanstack/vue-table";
 import { Checkbox } from "../ui/checkbox";
 import DataTableColumnHeaderVue from "~/components/ui/dataTable/ColumnHeader.vue";
 import TransactionsDataTableRowActionsVue from "./DataTableRowActions.vue";
-
+import { NuxtLink } from "#components";
+import { useI18n } from "#imports";
 export const columns: ColumnDef<Transaction>[] = [
   {
     id: "select",
@@ -22,22 +23,22 @@ export const columns: ColumnDef<Transaction>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "merchantTransactionId",
-    header: ({ column }) => {
-      const { t } = useI18n();
-      const title = t("transaction_id");
-      return h(DataTableColumnHeaderVue, { column, title });
-    },
-    cell: ({ row }) => {
-      const merchantTransactionId = row.getValue("merchantTransactionId");
-      return merchantTransactionId ? h(
-        "div",
-        { class: "w-[100px] whitespace-nowrap truncate hover:w-full font-medium" },
-        row.getValue("merchantTransactionId")
-      ) : h("p", "-");
-    },
-  },
+  // {
+  //   accessorKey: "merchantTransactionId",
+  //   header: ({ column }) => {
+  //     const { t } = useI18n();
+  //     const title = t("transaction_id");
+  //     return h(DataTableColumnHeaderVue, { column, title });
+  //   },
+  //   cell: ({ row }) => {
+  //     const merchantTransactionId = row.getValue("merchantTransactionId");
+  //     return merchantTransactionId ? h(
+  //       "div",
+  //       { class: "w-[100px] whitespace-nowrap truncate hover:w-full font-medium" },
+  //       row.getValue("merchantTransactionId")
+  //     ) : h("p", "-");
+  //   },
+  // },
   {
     accessorKey: "payerName",
     header: ({ column }) => {
@@ -47,7 +48,17 @@ export const columns: ColumnDef<Transaction>[] = [
     },
     cell: ({ row }) => {
       const payerName = row.getValue("payerName");
-      return payerName ? h("p", payerName) : h("p", "-");
+      const merchantTransactionId = row.original.merchantTransactionId;
+      const route = useRoute();
+      return payerName ? h(
+        NuxtLink,
+        {
+          class:
+            "font-medium text-primary w-fit whitespace-nowrap truncate hover:w-full",
+          to: merchantTransactionId ? `${route.path}/transactionDetails/${merchantTransactionId}` : route.path,
+        },
+        payerName
+      ) : h("p", "-");
     },
   },
   {

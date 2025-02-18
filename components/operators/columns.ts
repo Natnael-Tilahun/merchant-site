@@ -3,6 +3,7 @@ import type { ColumnDef } from "@tanstack/vue-table";
 import { Checkbox } from "../ui/checkbox";
 import DataTableColumnHeaderVue from "../ui/dataTable/ColumnHeader.vue";
 import EmployeeDataTableRowActionsVue from "./DataTableRowActions.vue";
+import { NuxtLink } from "#components";
 
 export const columns: ColumnDef<Employee>[] = [
   {
@@ -23,22 +24,22 @@ export const columns: ColumnDef<Employee>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "merchantOperatorId",
-    header: ({ column }) => {
-      const { t } = useI18n();
-      const title = t("merchant_operator_id");
-      return h(DataTableColumnHeaderVue, { column, title });
-    },
-    cell: ({ row }) => {
-      const merchantOperatorId = row.getValue("merchantOperatorId");
-      return merchantOperatorId ? h(
-        "div",
-        { class: "w-[100px] whitespace-nowrap truncate hover:w-full font-medium" },
-        row.getValue("merchantOperatorId")
-      ) : h("p", "-");
-    },
-  },
+  // {
+  //   accessorKey: "merchantOperatorId",
+  //   header: ({ column }) => {
+  //     const { t } = useI18n();
+  //     const title = t("merchant_operator_id");
+  //     return h(DataTableColumnHeaderVue, { column, title });
+  //   },
+  //   cell: ({ row }) => {
+  //     const merchantOperatorId = row.getValue("merchantOperatorId");
+  //     return merchantOperatorId ? h(
+  //       "div",
+  //       { class: "w-[100px] whitespace-nowrap truncate hover:w-full font-medium" },
+  //       row.getValue("merchantOperatorId")
+  //     ) : h("p", "-");
+  //   },
+  // },
   {
     accessorKey: "fullName",
     header: ({ column }) => {
@@ -48,7 +49,17 @@ export const columns: ColumnDef<Employee>[] = [
     },
     cell: ({ row }) => {
       const fullName = row.getValue("fullName");
-      return fullName ? h("p", fullName) : h("p", "-");
+      const merchantOperatorId = row.original.merchantOperatorId;
+      const route = useRoute();
+      return fullName ? h(
+        NuxtLink,
+        {
+          class:
+            "font-medium text-primary w-fit whitespace-nowrap truncate hover:w-full",
+          to: merchantOperatorId ? `${route.path}/operatorDetails/${merchantOperatorId}` : route.path,
+        },
+        fullName
+      ) : h("p", "-");
     },
   },
   {

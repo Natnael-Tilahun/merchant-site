@@ -3,8 +3,7 @@ import type { ColumnDef } from "@tanstack/vue-table";
 import { Checkbox } from "../ui/checkbox";
 import BranchesDataTableRowActionsVue from "./DataTableRowActions.vue";
 import DataTableColumnHeaderVue from "~/components/ui/dataTable/ColumnHeader.vue";
-
-
+import { NuxtLink } from "#components";
 export const columns: ColumnDef<Branch>[] = [
   {
     id: "select",
@@ -24,22 +23,22 @@ export const columns: ColumnDef<Branch>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  {
-    accessorKey: "merchantBranchId",
-    header: ({ column }) => {
-      const { t } = useI18n();
-      const title = t("branch_id");
-      return h(DataTableColumnHeaderVue, { column, title });
-    },
-    cell: ({ row }) => {
-      const merchantBranchId = row.getValue("merchantBranchId");
-      return merchantBranchId ? h(
-        "div",
-        { class: "w-[100px] whitespace-nowrap truncate hover:w-full font-medium" },
-        row.getValue("merchantBranchId")
-      ) : h("p", "-");
-    },
-  },
+  // {
+  //   accessorKey: "merchantBranchId",
+  //   header: ({ column }) => {
+  //     const { t } = useI18n();
+  //     const title = t("branch_id");
+  //     return h(DataTableColumnHeaderVue, { column, title });
+  //   },
+  //   cell: ({ row }) => {
+  //     const merchantBranchId = row.getValue("merchantBranchId");
+  //     return merchantBranchId ? h(
+  //       "div",
+  //       { class: "w-[100px] whitespace-nowrap truncate hover:w-full font-medium" },
+  //       row.getValue("merchantBranchId")
+  //     ) : h("p", "-");
+  //   },
+  // },
   {
     accessorKey: "branchName",
     header: ({ column }) => {
@@ -49,7 +48,17 @@ export const columns: ColumnDef<Branch>[] = [
     },
     cell: ({ row }) => {
       const branchName = row.getValue("branchName");
-      return branchName ? h("p", branchName) : h("p", "-");
+      const merchantBranchId = row.original.merchantBranchId;
+      const route = useRoute();
+      return branchName ? h(
+        NuxtLink,
+        {
+          class:
+            "font-medium text-primary w-fit whitespace-nowrap truncate hover:w-full",
+          to: merchantBranchId ? `${route.path}/branchDetails/${merchantBranchId}` : route.path,
+        },
+        branchName
+      ) : h("p", "-");
     },
   },
   {
