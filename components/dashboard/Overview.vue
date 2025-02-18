@@ -59,11 +59,11 @@ const data = computed<MonthlyData[]>(() => {
         const monthIndex = date.getMonth();
         if (monthIndex >= 0 && monthIndex < 12) {
           const status = transaction.paymentStatus.toLowerCase();
-          if (status === $t("completed")) {
+          if (status === "completed") {
             monthlyData[monthIndex].completed += transaction.amount;
-          } else if (status === $t("pending")) {
+          } else if (status === "pending") {
             monthlyData[monthIndex].Pending += transaction.amount;
-          } else if (status === $t("failed")) {
+          } else if (status === "failed") {
             monthlyData[monthIndex].Failed += transaction.amount;
           }
         }
@@ -83,7 +83,7 @@ const maxValue = computed(() =>
   <BarChart
     index="name"
     :data="data"
-    :categories="[$t('completed'), $t('pending'), $t('failed')]"
+    :categories="['completed', 'pending', 'failed']"
     :y-formatter="
       (tick: number | Date, i: number, ticks: number[] | Date[]) => {
         return typeof tick === 'number'
