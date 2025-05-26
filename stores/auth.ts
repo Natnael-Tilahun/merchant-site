@@ -10,6 +10,10 @@ interface AuthState {
   refreshToken: string;
   refreshTokenExpiresIn: string;
   permissions: string[];
+  verificationId: string
+  phone: string
+  expiryTime: string
+  twoFactorToken:string
 }
 
 interface AuthPayload {
@@ -21,6 +25,10 @@ interface AuthPayload {
   refreshToken: string;
   refreshTokenExpiresIn: string;
   permissions: string[];
+  verificationId: string
+  phone: string
+  expiryTime: string
+  twoFactorToken:string
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -32,7 +40,11 @@ export const useAuthStore = defineStore("auth", {
     accessToken: "",
     refreshToken: "",
     refreshTokenExpiresIn: "",
-    permissions: []
+    permissions: [],
+    verificationId: "",
+    expiryTime: "",
+    phone:"",
+    twoFactorToken:""
   }),
 
   actions: {
@@ -50,6 +62,17 @@ export const useAuthStore = defineStore("auth", {
       this.permissions = auth?.permissions ?? [];
     },
 
+
+    setOTPValues(auth: { verificationId: string, expiryTime:string, phone:string }) {
+      this.verificationId = auth?.verificationId ?? "";
+      this.expiryTime = auth?.expiryTime ?? "";
+      this.phone = auth?.phone ?? "";
+    },
+
+    setTwoFactorToken(auth: { twoFactorToken: string}) {
+      this.twoFactorToken = auth?.twoFactorToken ?? "";
+    },
+
     $reset() {
       this.isAuthenticated = false;
       this.username = "";
@@ -59,6 +82,9 @@ export const useAuthStore = defineStore("auth", {
       this.refreshToken = "";
       this.refreshTokenExpiresIn = "";
       this.permissions = [];
+      this.verificationId = "";
+      this.expiryTime = "";
+      this.phone = "";
     },
   },
   getters: {
@@ -71,6 +97,8 @@ export const useAuthStore = defineStore("auth", {
     }
   },
   persist: {
-    storage: persistedState.cookies,
+    storage: sessionStorage,
+    paths: ['isAuthenticated', 'accessToken', 'refreshToken', 'refreshTokenExpiresIn', 'twoFactorToken', 'verificationId']
+    // storage: persistedState.cookies,
   },
 });

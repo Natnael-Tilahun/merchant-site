@@ -19,5 +19,10 @@ export const profileFormSchema = toTypedSchema(
     postalNumber: z.string().optional(),
     faxNumber: z.string().optional(),
     shortCode: z.string().optional().nullable(),
+    qrCodeDataBase64: z.string().optional().nullable(),
+    staticQrData: z.string().optional().nullable(),
+    merchantLevel: z.string().optional().nullable(),
+    defaultPaymentReceivingAccountNumber: z.number().optional().nullable(),
+    status: z.string().optional().nullable(),
   })
 );

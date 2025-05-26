@@ -1,254 +1,180 @@
 import { Toast, ToastAction, toast, useToast } from "~/components/ui/toast";
+import type { Employee } from "~/types";
+import { handleApiError, type ApiResult } from "~/types/api";
 
 export const useEmployees = () => {
     const runtimeConfig = useRuntimeConfig();
     const isLoading = ref<boolean>(false);
 
     const store = useAuthStore();
+    const { fetch } = useApi();
 
-    const getEmployees: () => Promise<Employee[]> = async () => {
+
+    const getEmployees: () => ApiResult<Employee[]> = async () => {
+
         try {
-            const { data, error, status } = await useAsyncData<Employee[]>(`operators`, () =>
-                $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators`, {
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                })
-            );
+            const { data ,pending, error, status } = await fetch<Employee[]>(
+                `/api/v1/merchants/operators`,
+                {
+                  method: "GET"
+                }
+              );
+        
+              isLoading.value = pending.value;
+        
+              if (status.value === "error") {
+                handleApiError(error);
+              }
+        
+              return data.value ? (data.value as unknown as Employee[]) : null;
 
-            if (status.value == "error") {
-                console.log("Operator error : ", error);
-                toast({
-                    title: (error as any)?.value?.data?.title,
-                    description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-                    variant: "destructive",
-                });
-                throw new Error("Getting operators error: " + error.value);
-            }
-
-            if (!data.value) {
-                throw new Error("No operators data received");
-            }
-
-            return data.value;
-
-        } catch (error) {
-            throw error;
+        } catch (err) {
+            handleApiError(err);
+            return null;
         } finally {
             isLoading.value = false;
         }
     };
 
 
-    const deleteEmployee: (id: string) => Promise<Employee[] | undefined> = async (id) => {
+    const deleteEmployee: (id: string) => ApiResult<any> = async (id) => {
 
-        try {
-            const { data, error, status } = await useAsyncData<Employee[]>(`operators`, () =>
-                $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators/${id}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            Authorization: `Bearer ${store.accessToken}`,
-                        },
-                    }
-                )
-            )
-
+           try {
+            const { data, pending, error, status } = await fetch<any>(
+              `/api/v1/merchants/operators/${id}`,
+              { method: "DELETE" }
+            );
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                console.log("error: ", error)
-                toast({
-                    title: (error as any)?.value?.data?.title,
-                    description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-                    variant: "destructive",
-                });
-                throw new Error("Getting operators error: " + error.value);
+              handleApiError(error);
             }
-
-            if (status.value === "success") {
-                if (!data.value) {
-                    throw new Error("No operators data received");
-                }
-                return data.value;
-            }
-
-            return [];
-
-        } catch (error) {
-            throw new Error("Getting operators error: " + error);
-        } finally {
+      
+            return data.value;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
+          finally {
+            // Ensure to stop loading state whether login is successful or not
             isLoading.value = false;
         }
     }
 
-    const getEmployeeById: (id: string) => Promise<Employee> = async (id) => {
+    const getEmployeeById: (id: string) => ApiResult<Employee> = async (id) => {
+
         try {
-            const { data, pending, error, status } = await useFetch<Employee>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators/${id}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                }
+            const { data, pending, error, status } = await fetch<Employee>(
+              `/api/v1/merchants/operators/${id}`
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.type == "/constraint-violation" ? error.value?.data?.fieldErrors[0]?.message : error.value?.data?.message,
-                    variant: "destructive"
-                })
-                throw new Error(error.value?.data?.detail);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No operator data received");
-            }
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Employee) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
-    const getBranchOperators: (id: string) => Promise<Employee[]> = async (id) => {
+    const getBranchOperators: (id: string) => ApiResult<Employee[]> = async (id) => {
+
         try {
-            const { data, pending, error, status } = await useFetch<Employee[]>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches/${id}/employees`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                }
+            const { data, pending, error, status } = await fetch<Employee[]>(
+              `/api/v1/merchants/branches/${id}/employees`
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.type == "/constraint-violation" ? error.value?.data?.fieldErrors[0]?.message : error.value?.data?.message,
-                    variant: "destructive"
-                })
-                throw new Error(error.value?.data?.detail);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No branch operator data received");
-            }
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Employee[]) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
-    const createEmployee: (employeeData: Employee) => Promise<Employee> = async (employeeData) => {
+    const createEmployee: (employeeData: Employee) => ApiResult<Employee> = async (employeeData) => {
+        
         try {
-            const { data, error, status } = await useFetch<Employee>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                    body: JSON.stringify(employeeData),
-                },
+            const { data, pending, error, status } = await fetch<Employee>(
+              '/api/v1/merchants/operators',
+              {
+                method: "POST",
+                body: employeeData
+              }
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-                console.log("Creating new operator error: ", error.value?.data.detail || error.value?.data?.message)
-                throw new Error(error.value?.data.detail || error.value?.data?.message);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No operator with this customer id received");
-            }
-
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Employee) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
-    const updateEmployee: (id: string, employeeData: Employee) => Promise<Employee> = async (id, employeeData) => {
+    const updateEmployee: (id: string, employeeData: Employee) => ApiResult<Employee> = async (id, employeeData) => {
+        
         try {
-            const { data, error, status } = await useFetch<Employee>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators/${id}`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                    body: JSON.stringify(employeeData),
-                },
+            const { data, pending, error, status } = await fetch<Employee>(
+              `/api/v1/merchants/operators/${id}`,
+              {
+                method: "PATCH",
+                body: employeeData
+              }
             );
-
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-
-                console.log("Error: ", error)
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.type == "/constraint-violation" ? error.value?.data?.fieldErrors[0]?.message : error.value?.data?.message,
-                    variant: "destructive"
-                })
-
-                if (error.value?.data?.type == "/constraint-violation") {
-                    console.log("Updating operator error: ", error.value?.data?.fieldErrors[0].message)
-                }
-                else {
-                    console.log("Updating operator errorrr: ", error.value?.data?.message)
-                }
-                throw new Error((error as any).value);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No operator with this merchant id received");
-            }
-
-            return data.value;
-        } catch (err) {
-            // Throw the error to be caught and handled by the caller
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Employee) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
-    const resetEmployeePassword: (id: string, newPassword: string) => Promise<Employee | null> = async (id, newPassword) => {
+    const resetEmployeePassword: (id: string, newPassword: string) => ApiResult<Employee | null> = async (id, newPassword) => {
         const employeeData = {
             newPassword: newPassword
         }
 
         try {
-            const { data, error, status } = await useFetch<Employee>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators/${id}/reset-password`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                    body: JSON.stringify(employeeData),
-                },
+            const { data, pending, error, status } = await fetch<Employee>(
+              '/api/v1/merchants/operators/${id}/reset-password',
+              {
+                method: "POST",
+                body: employeeData
+              }
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-
-                console.log("Error: ", error)
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-
-                throw new Error(error.value?.data.detail || error.value?.data?.message)
+              handleApiError(error);
             }
-
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Employee) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
     return {

@@ -38,9 +38,9 @@ try {
     taxPayerExpiryDate: formatDate(data.value.taxPayerExpiryDate),
   });
 
-  form.setFieldValue("city", data.value.address.city);
-  form.setFieldValue("businessEmail", data.value.address.businessEmail);
-  form.setFieldValue("postalNumber", data.value.address.postalNumber);
+  form.setFieldValue("city", data.value?.address?.city);
+  form.setFieldValue("businessEmail", data.value?.address?.businessEmail);
+  form.setFieldValue("postalNumber", data.value?.address?.postalNumber);
 } catch (error) {
   console.error("Error fetching profile:", error);
   toast({
@@ -206,6 +206,32 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormMessage />
             </FormItem>
           </FormField>
+          <FormField v-slot="{ componentField }" name="merchantLevel">
+            <FormItem>
+              <FormLabel>{{ $t("merchant_Level") }}</FormLabel>
+              <FormControl>
+                <UiInput
+                  type="text"
+                  :placeholder="$t('merchant_Level')"
+                  v-bind="componentField"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
+          <FormField v-slot="{ componentField }" name="status">
+            <FormItem>
+              <FormLabel>{{ $t("status") }}</FormLabel>
+              <FormControl>
+                <UiInput
+                  type="text"
+                  :placeholder="$t('status')"
+                  v-bind="componentField"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
           <FormField v-slot="{ componentField }" name="postalNumber">
             <FormItem>
               <FormLabel>{{ $t("postal_number") }}</FormLabel>
@@ -226,6 +252,19 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                 <UiInput
                   type="text"
                   :placeholder="$t('enter_short_code')"
+                  v-bind="componentField"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          </FormField>
+          <FormField v-slot="{ componentField }" name="defaultPaymentReceivingAccountNumber">
+            <FormItem>
+              <FormLabel>{{ $t("default_Payment_Receiving_Account_Number") }}</FormLabel>
+              <FormControl>
+                <UiInput
+                  type="number"
+                  :placeholder="$t('default_Payment_Receiving_Account_Number')"
                   v-bind="componentField"
                 />
               </FormControl>
