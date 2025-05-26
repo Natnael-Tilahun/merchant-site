@@ -1,11 +1,14 @@
 import { useAuthStore } from "~/stores/auth";
 import { toast } from "~/components/ui/toast";
+import type { Transaction } from "~/types";
+import { handleApiError, type ApiResult } from "~/types/api";
 
 export const useTransactions = () => {
     const runtimeConfig = useRuntimeConfig();
     const store = useAuthStore();
     const isLoading = ref<boolean>(false);
     const transactionFilterStore = useTransactionFilterStore();
+    const { fetch } = useApi();
 
 
 
@@ -31,7 +34,7 @@ export const useTransactions = () => {
         initiatedDate?: string,
         completedDate?: string,
         expirationDate?: string
-    ) => Promise<Transaction[]> = async (
+    ) => ApiResult<Transaction[]> = async (
         paymentStatus = undefined,
         pageNumber = undefined,
         pageSize = undefined,
@@ -54,205 +57,169 @@ export const useTransactions = () => {
         completedDate = undefined,
         expirationDate = undefined
     ) => {
-            try {
-                const { data, error, status } = await useAsyncData<Transaction[]>(`transactions`, () =>
-                    $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/transactions`, {
-                        headers: {
-                            Authorization: `Bearer ${store.accessToken}`,
-                        },
-                        query: {
-                            "paymentStatus.equals": paymentStatus ?? transactionFilterStore.paymentStatus == 'NONE' ? '' : transactionFilterStore.paymentStatus,
-                            "page": pageNumber ?? transactionFilterStore.pageNumber,
-                            "size": pageSize ?? transactionFilterStore.pageSize,
-                            "sort": sortBy ?? transactionFilterStore.sortBy,
-                            ...(transactionInitiator || (transactionFilterStore.transactionInitiator !== 'NONE' && transactionFilterStore.transactionInitiator !== '') ? {
-                              "transactionInitiator.equals": transactionInitiator ?? transactionFilterStore.transactionInitiator
-                            } : {}),
-                            ...(amountGreaterThanOrEqual || transactionFilterStore.amountGreaterThanOrEqual ? {
-                              "amount.greaterThanOrEqual": amountGreaterThanOrEqual ?? transactionFilterStore.amountGreaterThanOrEqual
-                            } : {}),
-                            ...(amountLessThanOrEqual || transactionFilterStore.amountLessThanOrEqual ? {
-                              "amount.lessThanOrEqual": amountLessThanOrEqual ?? transactionFilterStore.amountLessThanOrEqual
-                            } : {}),
-                            ...(payerName || transactionFilterStore.payerName ? {
-                              "payerName.contains": payerName ?? transactionFilterStore.payerName
-                            } : {}),
-                            ...(payerPhone || transactionFilterStore.payerPhone ? {
-                              "payerPhone.contains": payerPhone ?? transactionFilterStore.payerPhone
-                            } : {}),
-                            ...(payerAccountNumber || transactionFilterStore.payerAccountNumber ? {
-                              "payerAccountNumber.in": payerAccountNumber ?? transactionFilterStore.payerAccountNumber
-                            } : {}),
-                            ...(payerId || transactionFilterStore.payerId ? {
-                              "payerId.contains": payerId ?? transactionFilterStore.payerId
-                            } : {}),
-                            ...(paymentReference || transactionFilterStore.paymentReference ? {
-                              "paymentReference.contains": paymentReference ?? transactionFilterStore.paymentReference
-                            } : {}),
-                            ...(dynamicId || transactionFilterStore.dynamicId ? {
-                              "dynamicId.contains": dynamicId ?? transactionFilterStore.dynamicId
-                            } : {}),
-                            ...(mbTransactionId || transactionFilterStore.mbTransactionId ? {
-                              "mbTransactionId.contains": mbTransactionId ?? transactionFilterStore.mbTransactionId
-                            } : {}),
-                            ...(coreTransactionId || transactionFilterStore.coreTransactionId ? {
-                              "coreTransactionId.contains": coreTransactionId ?? transactionFilterStore.coreTransactionId
-                            } : {}),
-                            ...(merchantAccountNumber || transactionFilterStore.merchantAccountNumber ? {
-                              "merchantAccountNumber.contains": merchantAccountNumber ?? transactionFilterStore.merchantAccountNumber
-                            } : {}),
-                            ...(merchantBranchId || transactionFilterStore.merchantBranchId ? {
-                              "merchantBranchId.equals": merchantBranchId ?? transactionFilterStore.merchantBranchId
-                            } : {}),
-                            ...(merchantOperatorId || transactionFilterStore.merchantOperatorId ? {
-                              "merchantOperatorId.equals": merchantOperatorId ?? transactionFilterStore.merchantOperatorId
-                            } : {}),
-                            ...(initiatedDate || transactionFilterStore.initiatedDate ? {
-                              "initiatedDate.greaterThanOrEqual": initiatedDate ?? transactionFilterStore.initiatedDate
-                            } : {}),
-                            ...(completedDate || transactionFilterStore.completedDate ? {
-                              "completedDate.greaterThanOrEqual": completedDate ?? transactionFilterStore.completedDate
-                            } : {}),
-                            ...(expirationDate || transactionFilterStore.expirationDate ? {
-                              "expirationDate.greaterThanOrEqual": expirationDate ?? transactionFilterStore.expirationDate
-                            } : {}),
-                        }
-                    })
-                );
 
-                if (status.value == "error") {
-                    console.log("Getting transactions error : ", error);
-                    toast({
-                        title: (error as any)?.value?.data?.title,
-                        description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-                        variant: "destructive",
-                    });
-                    throw new Error("Getting transactions error: " + error.value?.message);
+        try {
+            const { data ,pending, error, status } = await fetch<Transaction[]>(
+                `/api/v1/merchants/transactions`,
+                {
+                  method: "GET",
+                  params: {
+                    "paymentStatus.equals": paymentStatus ?? transactionFilterStore.paymentStatus == 'NONE' ? '' : transactionFilterStore.paymentStatus,
+                    "page": pageNumber ?? transactionFilterStore.pageNumber,
+                    "size": pageSize ?? transactionFilterStore.pageSize,
+                    "sort": sortBy ?? transactionFilterStore.sortBy,
+                    ...(transactionInitiator || (transactionFilterStore.transactionInitiator !== 'NONE' && transactionFilterStore.transactionInitiator !== '') ? {
+                      "transactionInitiator.equals": transactionInitiator ?? transactionFilterStore.transactionInitiator
+                    } : {}),
+                    ...(amountGreaterThanOrEqual || transactionFilterStore.amountGreaterThanOrEqual ? {
+                      "amount.greaterThanOrEqual": amountGreaterThanOrEqual ?? transactionFilterStore.amountGreaterThanOrEqual
+                    } : {}),
+                    ...(amountLessThanOrEqual || transactionFilterStore.amountLessThanOrEqual ? {
+                      "amount.lessThanOrEqual": amountLessThanOrEqual ?? transactionFilterStore.amountLessThanOrEqual
+                    } : {}),
+                    ...(payerName || transactionFilterStore.payerName ? {
+                      "payerName.contains": payerName ?? transactionFilterStore.payerName
+                    } : {}),
+                    ...(payerPhone || transactionFilterStore.payerPhone ? {
+                      "payerPhone.contains": payerPhone ?? transactionFilterStore.payerPhone
+                    } : {}),
+                    ...(payerAccountNumber || transactionFilterStore.payerAccountNumber ? {
+                      "payerAccountNumber.in": payerAccountNumber ?? transactionFilterStore.payerAccountNumber
+                    } : {}),
+                    ...(payerId || transactionFilterStore.payerId ? {
+                      "payerId.contains": payerId ?? transactionFilterStore.payerId
+                    } : {}),
+                    ...(paymentReference || transactionFilterStore.paymentReference ? {
+                      "paymentReference.contains": paymentReference ?? transactionFilterStore.paymentReference
+                    } : {}),
+                    ...(dynamicId || transactionFilterStore.dynamicId ? {
+                      "dynamicId.contains": dynamicId ?? transactionFilterStore.dynamicId
+                    } : {}),
+                    ...(mbTransactionId || transactionFilterStore.mbTransactionId ? {
+                      "mbTransactionId.contains": mbTransactionId ?? transactionFilterStore.mbTransactionId
+                    } : {}),
+                    ...(coreTransactionId || transactionFilterStore.coreTransactionId ? {
+                      "coreTransactionId.contains": coreTransactionId ?? transactionFilterStore.coreTransactionId
+                    } : {}),
+                    ...(merchantAccountNumber || transactionFilterStore.merchantAccountNumber ? {
+                      "merchantAccountNumber.contains": merchantAccountNumber ?? transactionFilterStore.merchantAccountNumber
+                    } : {}),
+                    ...(merchantBranchId || transactionFilterStore.merchantBranchId ? {
+                      "merchantBranchId.equals": merchantBranchId ?? transactionFilterStore.merchantBranchId
+                    } : {}),
+                    ...(merchantOperatorId || transactionFilterStore.merchantOperatorId ? {
+                      "merchantOperatorId.equals": merchantOperatorId ?? transactionFilterStore.merchantOperatorId
+                    } : {}),
+                    ...(initiatedDate || transactionFilterStore.initiatedDate ? {
+                      "initiatedDate.greaterThanOrEqual": initiatedDate ?? transactionFilterStore.initiatedDate
+                    } : {}),
+                    ...(completedDate || transactionFilterStore.completedDate ? {
+                      "completedDate.greaterThanOrEqual": completedDate ?? transactionFilterStore.completedDate
+                    } : {}),
+                    ...(expirationDate || transactionFilterStore.expirationDate ? {
+                      "expirationDate.greaterThanOrEqual": expirationDate ?? transactionFilterStore.expirationDate
+                    } : {}),
                 }
-
-                if (!data.value) {
-                    throw new Error("No transactions data received");
                 }
+              );
+        
+              isLoading.value = pending.value;
+        
+              if (status.value === "error") {
+                handleApiError(error);
+              }
+        
+              return data.value ? (data.value as unknown as Transaction[]) : null;
 
-                return data.value;
-
-            } catch (error) {
-                throw error;
-            } finally {
-                isLoading.value = false;
-            }
+        } catch (err) {
+            handleApiError(err);
+            return null;
+        } finally {
+            isLoading.value = false;
+        }
         };
 
-    const getTransactionById: (id: string) => Promise<Transaction> = async (id) => {
+    const getTransactionById: (id: string) => ApiResult<Transaction> = async (id) => {
         try {
-            const { data, error, status } = await useFetch<Transaction>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/transactions/${id}?PaymentStatus=NONE`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                }
+            const { data, pending, error, status } = await fetch<Transaction>(
+              `/api/v1/merchants/transactions/${id}?PaymentStatus=NONE`
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-                throw new Error(error.value?.data?.detail || error.value?.data?.message);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No transaction data received");
-            }
-            return data.value;
-        } catch (err) {
-            throw err;
+      
+            return data.value ? (data.value as unknown as Transaction) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
         }
-    };
 
-    const getTransactionsByOperatorId: (id: string) => Promise<Transaction[]> = async (id) => {
+    const getTransactionsByOperatorId: (id: string) => ApiResult<Transaction[]> = async (id) => {
         try {
-            const { data, error, status } = await useFetch<Transaction[]>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/operators/${id}/transactions`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                }
+            const { data, pending, error, status } = await fetch<Transaction[]>(
+              `/api/v1/merchants/operators/${id}/transactions`
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-                throw new Error(error.value?.data?.detail || error.value?.data?.message);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No transactions for operator received");
-            }
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Transaction[]) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
 
-    const getTransactionsByBranchId: (id: string) => Promise<Transaction[]> = async (id) => {
+    const getTransactionsByBranchId: (id: string) => ApiResult<Transaction[]> = async (id) => {
+
         try {
-            const { data, error, status } = await useFetch<Transaction[]>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches/${id}/transactions`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                }
+            const { data, pending, error, status } = await fetch<Transaction[]>(
+              `/api/v1/merchants/branches/${id}/transactions`
             );
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-                throw new Error(error.value?.data?.detail || error.value?.data?.message);
+              handleApiError(error);
             }
-
-            if (!data.value) {
-                throw new Error("No transactions for branch received");
-            }
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Transaction[]) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
     const initiateTransaction = async (transactionData: { amount: number; paymentReference: string }) => {
+        
         try {
-            const { data, error } = await useFetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/transactions`, {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${store.accessToken}`,
-                },
-                body: JSON.stringify(transactionData),
-            });
-
-            if (error.value) {
-                throw new Error(error.value.message);
+            const { data, pending, error, status } = await fetch<Transaction>(
+              '/api/v1/merchants/transactions',
+              {
+                method: "POST",
+                body: transactionData
+              }
+            );
+      
+            isLoading.value = pending.value;
+      
+            if (status.value === "error") {
+              handleApiError(error);
             }
-
-            return data.value;
-        } catch (err) {
-            console.error("Error initiating transaction:", err);
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Transaction) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
     return {

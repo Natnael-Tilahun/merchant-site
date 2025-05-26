@@ -212,5 +212,7 @@
     "amount_less_than_or_equal": "Amount less than or equal",
     "filter_by_amount_less_than_or_equal": "Filter by amount less than or equal",
     "other_information": "Other Information",
-    "json_data": "JSON Data"
+    "json_data": "JSON Data",
+    "default_Payment_Receiving_Account_Number": "Default Payment Receiving Account Number",
+    "merchant_Level":"Merchant Level"
   }

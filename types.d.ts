@@ -35,11 +35,15 @@ interface Merchant {
     taxPayerIdNumber: string
     taxPayerIssueDate: string
     taxPayerExpiryDate: string
-    businessPhoneNumber: string
+    businessPhoneNumber?: string
     faxNumber: string
-    address: Address
+    address?: Address
     shortCode: string
     status: Status
+    qrCodeDataBase64?:string
+    staticQrData?:string
+    merchantLevel?:string
+    defaultPaymentReceivingAccountNumber?:number
 }
 
 interface Branch {
@@ -106,3 +110,51 @@ interface Transaction {
     payerPhone?: string
     qrEncodedData?: string
 }
+
+
+export interface ApiError {
+    type?: string;
+    message?: string;
+    detail?: string;
+    fieldErrors?: Array<{
+      field: string;
+      message: string;
+    }>;
+  }
+  
+  export interface ApiResponse<T> {
+    data: T;
+    pending: boolean;
+    error: {
+      value?: {
+        data?: ApiError;
+      };
+    };
+    status: {
+      value: 'success' | 'error';
+    };
+  }
+  
+  export interface OtpDTO {
+    verificationId:	string
+    phone?:	string
+    expiryTime?:	string
+    }
+  
+  export interface TFAAccessTokenDTO{
+    token:	string
+    validFrom:	string
+    validTo:	string
+  }
+  
+  export interface VerificationRequest{
+    verificationId: string
+    otp?: 	string
+  }
+
+  
+  interface AuthResponse {
+    accessToken?: string;
+    refreshToken?: string;
+    permissions?: string[];
+  }

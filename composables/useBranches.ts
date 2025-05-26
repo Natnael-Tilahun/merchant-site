@@ -1,181 +1,132 @@
-import { Toast, ToastAction, toast, useToast } from "~/components/ui/toast";
+import type { Branch } from "~/types";
+import { handleApiError, type ApiResult } from "~/types/api";
 
 export const useBranches = () => {
     const runtimeConfig = useRuntimeConfig();
     const isLoading = ref<boolean>(false);
 
     const store = useAuthStore();
+    const { fetch } = useApi();
 
-    const getBranches: () => Promise<Branch[]> = async () => {
+
+    const getBranches: () => ApiResult<Branch[]> = async () => {
         try {
-            const { data, error, status } = await useAsyncData<Branch[]>(`branch`, () =>
-                $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches`, {
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                })
-            );
+            const { data ,pending, error, status } = await fetch<Branch[]>(
+                `/api/v1/merchants/branches`,
+                {
+                  method: "GET"
+                }
+              );
+        
+              isLoading.value = pending.value;
+        
+              if (status.value === "error") {
+                handleApiError(error);
+              }
+        
+              return data.value ? (data.value as unknown as Branch[]) : null;
 
-            if (status.value == "error") {
-                toast({
-                    title: (error as any)?.value?.data?.title,
-                    description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-                    variant: "destructive",
-                });
-                throw new Error("Getting branches error: " + error.value);
-            }
-
-            if (!data.value) {
-                throw new Error("No branches data received");
-            }
-
-            return data.value;
-
-        } catch (error) {
-            throw error;
+        } catch (err) {
+            handleApiError(err);
+            return null;
         } finally {
             isLoading.value = false;
         }
     };
 
 
-    const deleteBranch: (id: string) => Promise<Branch[] | null> = async (id) => {
+    const deleteBranch: (id: string) => ApiResult<any>  = async (id) => {
 
         try {
-            const { data, error, status } = await useAsyncData<Branch[]>(`branch`, () =>
-                $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches/${id}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            Authorization: `Bearer ${store.accessToken}`,
-                        },
-                    }
-
-                )
-            )
-
+            const { data, pending, error, status } = await fetch<any>(
+              `/api/v1/merchants/branches/${id}`,
+              { method: "DELETE" }
+            );
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-                console.log("error: ", error)
-                toast({
-                    title: (error as any)?.value?.data?.title,
-                    description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-                    variant: "destructive",
-                });
-                throw new Error("Getting branches error: " + error.value);
+              handleApiError(error);
             }
-
+      
             return data.value;
-
-
-        } catch (error) {
-            throw new Error("Getting branches error: " + error);
-        } finally {
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
+          finally {
             // Ensure to stop loading state whether login is successful or not
             isLoading.value = false;
         }
+
     }
 
-    const getBranchById: (id: string) => Promise<Branch> = async (id) => {
+    const getBranchById: (id: string) => ApiResult<Branch> = async (id) => {
+
         try {
-            const { data, error, status } = await useFetch<Branch>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches/${id}`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                }
+            const { data, pending, error, status } = await fetch<Branch>(
+              `/api/v1/merchants/branches/${id}`
             );
-
-            if (status.value === "error") {
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-                throw new Error(error.value?.data?.detail || error.value?.data?.message);
-            }
-
-            if (!data.value) {
-                throw new Error("No merchants data received");
-            }
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
-    };
-
-    const createBranch: (branchData: Branch) => Promise<Branch> = async (branchData) => {
-        try {
-            const { data, pending, error, status } = await useFetch<Branch>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                    body: JSON.stringify(branchData),
-                },
-            );
-
+      
             isLoading.value = pending.value;
-
+      
             if (status.value === "error") {
-
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-
-                throw new Error(error.value?.data.detail || error.value?.data?.message);
+              handleApiError(error);
             }
+      
+            return data.value ? (data.value as unknown as Branch) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
 
-            if (!data.value) {
-                throw new Error("No branch with this customer id received");
-            }
-
-            return data.value;
-        } catch (err) {
-            // Throw the error to be caught and handled by the caller
-            throw err;
-        }
     };
 
-    const updateBranch: (id: string, branchData: Branch) => Promise<Branch> = async (id, branchData) => {
+    const createBranch: (branchData: Branch) => ApiResult<Branch> = async (branchData) => {
+
         try {
-            const { data, error, status } = await useFetch<Branch>(
-                `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants/branches/${id}`,
-                {
-                    method: "PATCH",
-                    headers: {
-                        Authorization: `Bearer ${store.accessToken}`,
-                    },
-                    body: JSON.stringify(branchData),
-                },
+            const { data, pending, error, status } = await fetch<Branch>(
+              '/api/v1/merchants/branches',
+              {
+                method: "POST",
+                body: branchData
+              }
             );
-
-
+      
+            isLoading.value = pending.value;
+      
             if (status.value === "error") {
-
-                console.log("Error: ", error)
-                toast({
-                    title: error.value?.data?.type || "Something went wrong!",
-                    description: error.value?.data?.detail || error.value?.data?.message,
-                    variant: "destructive"
-                })
-
-                throw new Error((error as any).value);
+              handleApiError(error);
             }
+      
+            return data.value ? (data.value as unknown as Branch) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
+    };
 
-            if (!data.value) {
-                throw new Error("No branch with this merchant id received");
+    const updateBranch: (id: string, branchData: Branch) => ApiResult<Branch> = async (id, branchData) => {
+        try {
+            const { data, pending, error, status } = await fetch<Branch>(
+              `/api/v1/merchants/branches/${id}`,
+              {
+                method: "PATCH",
+                body: branchData
+              }
+            );
+      
+            isLoading.value = pending.value;
+      
+            if (status.value === "error") {
+              handleApiError(error);
             }
-
-            return data.value;
-        } catch (err) {
-            throw err;
-        }
+      
+            return data.value ? (data.value as unknown as Branch) : null;
+          } catch (err) {
+            handleApiError(err);
+            return null;
+          }
     };
 
     return {

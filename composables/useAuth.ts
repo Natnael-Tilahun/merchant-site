@@ -1,5 +1,9 @@
 import { Toast, ToastAction, useToast } from "~/components/ui/toast";
 import { useAuthUser } from "./useAuthUser";
+import type { AuthResponse, Merchant, OtpDTO, TFAAccessTokenDTO, User, UserInput } from "~/types";
+import { useApi } from "./useApi";
+import type { ApiResult } from "~/types/api";
+import { handleApiError } from "~/types/api";
 
 export const useAuth = () => {
   const runtimeConfig = useRuntimeConfig();
@@ -8,6 +12,8 @@ export const useAuth = () => {
   const isLoading = ref<boolean>(false);
   const store = useAuthStore();
   const { toast } = useToast();
+  const { fetch } = useApi();
+  const {getProfile} = useMerchants()
 
   const setUser = (user: User) => {
     authUser.value = user;
@@ -51,23 +57,17 @@ export const useAuth = () => {
   const login = async (user: UserInput) => {
 
     try {
-      const { data, error, status } = await useAsyncData<any>(`user`, () =>
-        $fetch(`${runtimeConfig.public.API_BASE_URL}/api/v1/auth/sign-in/password`,
-          {
-            method: "POST",
-            body: JSON.stringify(user)
-          })
-      ); // If login is successful, navigate to the home page
+      const { data, pending, error, status } = await fetch<AuthResponse>(
+        '/api/v1/auth/sign-in/password',
+        {
+          method: "POST",
+          body: user,
+          includeAuth: false
+        }
+      );
 
       if (status.value === "error") {
-        console.log("error: ", error)
-        // Handle the error, e.g., display a toast message or stay on the login page
-        toast({
-          title: (error as any)?.value?.data?.title,
-          description: (error as any)?.value?.data?.detail || (error as any)?.value?.data?.message,
-          variant: "destructive",
-        });
-        throw new Error("Login error: " + error.value);
+        handleApiError(error);
       }
 
       if (status.value === "success") {
@@ -76,36 +76,15 @@ export const useAuth = () => {
           ...data?.value,
           isAuthenticated: data?.value.accessToken ? true : false,
         });
-
-        try {
-          const { data, pending, error, status } = await useFetch<Merchant>(
-            `${runtimeConfig.public.API_BASE_URL}/api/v1/merchants`,
-            {
-              method: "GET",
-              headers: {
-                Authorization: `Bearer ${store.accessToken}`,
-              },
-            }
-          );
-
-          if (status.value == 'success') {
-            navigateTo("/", { replace: true });
-          }
-
-          if (status.value === "error" && error.value?.data?.detail == "404 NOT_FOUND") {
-            navigateTo("/register", { replace: true });
-          }
-        } catch (error) {
-          console.error("Getting profile error: ", error);
-          if ((error as any).value?.data?.detail == "404 NOT_FOUND") {
-            navigateTo("/register", { replace: true });
-          }
-        }
-        return data.value;
+        await getProfile()
+        navigateTo("/")
       }
 
+      return data
+
     } catch (error) {
-      console.error("Login error: ", error);
+      handleApiError(error);
+      return null;
     } finally {
       // Ensure to stop loading state whether login is successful or not
       isLoading.value = false;
@@ -155,74 +134,64 @@ export const useAuth = () => {
 
   const getRefreshToken = async () => {
     try {
-      const { data, error, status } = await useFetch(
-        `${runtimeConfig.public.API_BASE_URL}/v1/api/auth/refresh-token`,
+      const { data, pending, error, status } = await fetch<any>(
+        '/v1/api/auth/refresh-token',
         {
           method: "POST",
           body: {
             refreshToken: store.refreshToken,
           },
-          headers: {
-            Authorization: `Bearer ${store.accessToken}`,
-          },
         }
       );
 
-      if (status.value === "error") {
-        // Handle the error, e.g., display a toast message or stay on the login page
-        toast({
-          title: error?.value?.data?.title,
-          description: error?.value?.data?.detail,
-          variant: "destructive",
-        });
-        console.log("Refresh-token error: ", error);
+      isLoading.value = pending.value;
 
-        throw new Error("Refresh-token error: " + error.value);
+      if (status.value === "error") {
+        handleApiError(error);
       }
-      console.log("v1/api/auth/refresh-token: ", data);
-      return data.value;
+
+      return data.value ? (data.value as unknown as any) : null;
     } catch (err) {
-      // Throw the error to be caught and handled by the caller
-      throw err;
+      handleApiError(err);
+      return null;
     }
+
   };
 
   const getAuthorities = async () => {
+
     try {
-      const { data, error, status } = await useFetch<any>(
-        `${runtimeConfig.public.API_BASE_URL}/api/v1/auth/roles`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${store.accessToken}`,
-          },
+      const { data ,pending, error, status } = await fetch<any[]>(
+          `/api/v1/auth/roles`,
+          {
+            method: "GET"
+          }
+        );
+  
+        isLoading.value = pending.value;
+  
+        if (status.value === "error") {
+          handleApiError(error);
         }
-      );
 
-      if (status.value === "error") {
-        // Handle the error, e.g., display a toast message or stay on the login page
-        toast({
-          title: error?.value?.data?.title || error?.value,
-          description: error?.value?.data?.detail,
-          variant: "destructive",
-        });
-        console.log("Getting roles error: ", error);
+        if (status.value === "success") {
 
-        throw new Error("Getting role error: " + error.value);
-      }
-      if (status.value === "success") {
+          store.setPermissions({
+            permissions: data?.value && data?.value?.permissions
+          });
+  
+          navigateTo('/')
+        }
+  
+        return data.value ? (data.value as unknown as any) : null;
 
-        store.setPermissions({
-          permissions: data?.value && data?.value?.permissions
-        });
+  } catch (err) {
+      handleApiError(err);
+      return null;
+  } finally {
+      isLoading.value = false;
+  }
 
-        navigateTo('/')
-      }
-      return data.value;
-    } catch (err) {
-      // Throw the error to be caught and handled by the caller
-      throw err;
-    }
   };
 
   const userLoggedIn = async () => {
@@ -262,6 +231,67 @@ export const useAuth = () => {
     return navigateTo("/login", { replace: true });
   };
 
+  const requestTwoFactorAuth: (deliveryMethod?: string) => ApiResult<OtpDTO> = async (deliveryMethod) => {
+    try {
+      const { data, pending, error, status } = await fetch<OtpDTO>(
+        `/api/v1/auth/two-factor/request-token?deliveryMethod=${deliveryMethod}`,
+        {
+          method: "POST",
+        }
+      );
+
+      isLoading.value = pending.value;
+
+      if (status.value === "error") {
+        handleApiError(error);
+      }
+
+        const response = data.value as OtpDTO;
+      if (status.value === "success" && response?.verificationId) {
+        store.$patch({
+          verificationId: response.verificationId
+        });
+      }
+
+      return response;
+    } catch (err) {
+      handleApiError(err);
+      return null;
+    }
+  };
+
+  const validateTwoFactorAuth: (otp: string) => ApiResult<TFAAccessTokenDTO> = async (otp) => {
+    try {
+      const { data, pending, error, status } = await fetch<TFAAccessTokenDTO>(
+        `/api/v1/auth/two-factor/validate`,
+        {
+          method: "POST",
+          body: {
+            verificationId: store.verificationId,
+            otp: otp
+          }
+        }
+      );
+
+      isLoading.value = pending.value;
+
+      if (status.value === "error") {
+        await handleApiError(error);
+      }
+
+      const response = data.value as TFAAccessTokenDTO;
+      if (status.value === "success" && response?.token) {
+        store.$patch({
+          twoFactorToken: response.token
+        });
+      }
+      return response;
+
+    } catch (err) {
+      handleApiError(err);
+      return null;
+    }
+  };
 
   return {
     login,
@@ -271,5 +301,7 @@ export const useAuth = () => {
     logout,
     authUser,
     getRefreshToken,
+    requestTwoFactorAuth,
+    validateTwoFactorAuth
   };
 };

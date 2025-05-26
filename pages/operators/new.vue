@@ -47,16 +47,22 @@ const onSubmit = form.handleSubmit(async (values: any) => {
       ...values,
       fullName: values.firstName + " " + values.middleName,
     };
-    console.log("employeeData:", employeeData);
-    data.value = await createEmployee(employeeData); // Call your API function to fetch profile
-    navigateTo(`/operators`);
-    console.log("New operator data; ", data.value);
-    toast({
-      title: "Operator Created",
-      description: "Operator created successfully",
-    });
+    
+    // Log the data being sent for debugging
+    console.log("Sending employee data:", employeeData);
+    
+    data.value = await createEmployee(employeeData);
+    
+    if (data.value) {
+      navigateTo(`/operators`);
+      toast({
+        title: "Operator Created",
+        description: "Operator created successfully",
+      });
+    }
   } catch (err: any) {
-    console.error("Error creating new operator:", err.message);
+    // The error will already be handled by handleApiError
+    // console.error("Error creating new operator:", err);
     isError.value = true;
   } finally {
     isSubmitting.value = false;

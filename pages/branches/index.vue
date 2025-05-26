@@ -8,6 +8,8 @@ const isLoading = ref(false);
 const data = ref<Branch[]>([]);
 const { setBranches } = useBranchesStore();
 
+
+const fetchData = async () => {
 try {
   isLoading.value = true;
   data.value = await getBranches();
@@ -18,19 +20,28 @@ try {
 } finally {
   isLoading.value = false;
 }
+}
+
+// const refetch = async () => {
+//   try {
+//     isLoading.value = true;
+//     data.value = await getBranches();
+//     setBranches(data.value);
+//   } catch (error) {
+//     console.error("Getting branches error: ", error);
+//     isError.value = true;
+//   } finally {
+//     isLoading.value = false;
+//   }
+// };
 
 const refetch = async () => {
-  try {
-    isLoading.value = true;
-    data.value = await getBranches();
-    setBranches(data.value);
-  } catch (error) {
-    console.error("Getting branches error: ", error);
-    isError.value = true;
-  } finally {
-    isLoading.value = false;
-  }
+  await fetchData();
 };
+
+await useAsyncData("contractsData", async () => {
+  await fetchData();
+});
 </script>
 
 <!-- Render DataTable only if data is available -->

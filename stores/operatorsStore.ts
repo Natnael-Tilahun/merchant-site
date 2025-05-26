@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import type { Employee } from "~/types";
 
 interface OperatorsState {
     operators: Employee[]

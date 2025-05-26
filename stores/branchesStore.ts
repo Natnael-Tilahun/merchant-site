@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
+import type { Branch } from "~/types";
 
 interface BranchesState {
     branches: Branch[]
