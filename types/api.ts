@@ -4,7 +4,7 @@ import { useToast } from "~/components/ui/toast";
 export type ApiResult<T> = Promise<T | null>;
 const { toast } = useToast();
 
-export const handleApiError = (error: any): never => {
+export const handleApiError = async(error: any) => {
     const errorData = error?.value?.data as ApiError;
     console.log("errorData: ", errorData)
     toast({
@@ -20,8 +20,8 @@ export const handleApiError = (error: any): never => {
     'An unexpected error occurred';
 
     if(errorData?.type == "TFA_INVALID_TOKEN" || errorData?.type == "TFA_TOKEN_NOT_FOUND" ){
-        navigateTo("/invalid-2fa")
-    }
+        window.location.href = '/invalid-2fa';  
+        }
   
   throw new Error(errorMessage);
 }; 
