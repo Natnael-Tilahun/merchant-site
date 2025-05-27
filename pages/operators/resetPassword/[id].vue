@@ -39,11 +39,13 @@ const onSubmit = form.handleSubmit(async (values: any) => {
       employeeId.value,
       values.newPassword
     );
-    toast({
-      title: "Operator password resetted.",
-      description: "Operator password resetted successfully",
-    });
-    navigateTo("/operators");
+    if (data.value) {
+      toast({
+        title: "Operator password resetted.",
+        description: "Operator password resetted successfully",
+      });
+      navigateTo("/operators");
+    }
   } catch (err: any) {
     console.error("Error resetting operator password:", err.message);
     isError.value = true;
@@ -68,21 +70,12 @@ const onSubmit = form.handleSubmit(async (values: any) => {
       <div value="roleDetails" class="text-sm md:text-base p-6 basis-full">
         <form @submit="onSubmit">
           <div class="grid md:grid-cols-2 gap-6">
-            <FormField
-              v-slot="{ componentField }"
-              :value="employeeId"
-              name="merchantOperatorId"
-            >
+            <FormField v-slot="{ componentField }" :value="employeeId" name="merchantOperatorId">
               <FormItem>
                 <FormLabel>{{ $t("merchant_operator_id") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    disabled
-                    class="border-2 bg-muted dark:border-gray-700 dark:bg-gray-600"
-                    :placeholder="$t('enter_merchant_operator_id')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" disabled class="border-2 bg-muted dark:border-gray-700 dark:bg-gray-600"
+                    :placeholder="$t('enter_merchant_operator_id')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -91,31 +84,18 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("new_password") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_new_password')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_new_password')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             </FormField>
 
             <div class="col-span-full w-full py-4 flex justify-between">
-              <UiButton
-                :disabled="isSubmitting"
-                variant="outline"
-                type="button"
-                @click="$router.go(-1)"
-              >
+              <UiButton :disabled="isSubmitting" variant="outline" type="button" @click="$router.go(-1)">
                 {{ $t("cancel") }}
               </UiButton>
               <UiButton :disabled="isSubmitting" type="submit">
-                <Icon
-                  name="svg-spinners:8-dots-rotate"
-                  v-if="isSubmitting"
-                  class="mr-2 h-4 w-4 animate-spin"
-                ></Icon>
+                <Icon name="svg-spinners:8-dots-rotate" v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin"></Icon>
 
                 {{ $t("update") }}
               </UiButton>

@@ -214,5 +214,6 @@
     "other_information": "Other Information",
     "json_data": "JSON Data",
     "default_Payment_Receiving_Account_Number": "Default Payment Receiving Account Number",
-    "merchant_Level":"Merchant Level"
+    "merchant_Level":"Merchant Level",
+    "operator_code":"Operator Code"
   }

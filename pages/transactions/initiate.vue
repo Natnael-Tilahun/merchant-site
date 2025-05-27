@@ -31,10 +31,12 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (values: any) => {
   isLoading.value = true;
   try {
-    const data = await generateQRCode(values);
-    paymentResponse.value = data;
+    const response = await generateQRCode(values);
+    if(response){
+    paymentResponse.value = response;
     showQRCode.value = true;
     form.resetForm();
+    }
   } catch (error) {
     console.error("Login error: ", error);
   } finally {

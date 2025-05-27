@@ -38,6 +38,7 @@ try {
     taxPayerExpiryDate: formatDate(data.value.taxPayerExpiryDate),
   });
 
+  form.setFieldValue("defaultPaymentReceivingAccountNumber", parseInt(data.value?.defaultPaymentReceivingAccountNumber))
   form.setFieldValue("city", data.value?.address?.city);
   form.setFieldValue("businessEmail", data.value?.address?.businessEmail);
   form.setFieldValue("postalNumber", data.value?.address?.postalNumber);
@@ -65,12 +66,14 @@ const onSubmit = form.handleSubmit(async (values: any) => {
 
   try {
     isSubmitting.value = true;
-    data.value = await updateProfile(merchantData); // Call your API function to fetch profile
-    console.log("New Merchant data; ", data.value);
+    const response = await updateProfile(merchantData); // Call your API function to fetch profile
+    if(response){
+      data.value = response
     toast({
       title: "Merchant Updated",
       description: "Merchant profile updated successfully",
     });
+  }
   } catch (err: any) {
     console.error("Error updating merchant profile:", err.message);
     toast({

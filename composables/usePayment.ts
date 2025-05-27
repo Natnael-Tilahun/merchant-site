@@ -12,15 +12,17 @@ export const usePayment = () => {
   type UserInputForPushUssd = {
     merchantTransactionId: string;
     customerPhone: string;
-  }
+  };
 
-  const generateQRCode: (user: UserInput) => ApiResult<Transaction> = async (user: UserInput) => {
+  const generateQRCode: (user: UserInput) => ApiResult<Transaction> = async (
+    user: UserInput
+  ) => {
     try {
       const { data, pending, error, status } = await fetch<Transaction>(
-        '/api/v1/merchants/transactions',
+        "/api/v1/merchants/transactions",
         {
           method: "POST",
-          body: user
+          body: user,
         }
       );
 
@@ -32,18 +34,18 @@ export const usePayment = () => {
 
       toast({
         title: "QR Code generated successfully.",
-        variant: 'default'
+        variant: "default",
       });
       return data.value ? (data.value as unknown as Transaction) : null;
     } catch (err) {
-      handleApiError(err);
+      // handleApiError(err);
       return null;
     }
-    
-  }
+  };
 
-  const sendPushUssd: (user: UserInputForPushUssd) => ApiResult<Transaction> = async (user: UserInputForPushUssd) => {
-    
+  const sendPushUssd: (
+    user: UserInputForPushUssd
+  ) => ApiResult<Transaction> = async (user: UserInputForPushUssd) => {
     try {
       const { data, pending, error, status } = await fetch<Transaction>(
         `/api/v1/merchants/transactions/push-ussd/${user.merchantTransactionId}?customerPhone=${user.customerPhone}`,
@@ -61,22 +63,19 @@ export const usePayment = () => {
       navigateTo("/", { replace: true });
       toast({
         title: "Push USSD sent successfully.",
-        variant: 'default'
+        variant: "default",
       });
 
       return data.value ? (data.value as unknown as Transaction) : null;
     } catch (err) {
-      handleApiError(err);
+      // handleApiError(err);
       return null;
     }
-
-  }
-
-
+  };
 
   return {
     generateQRCode,
     Error,
-    sendPushUssd
+    sendPushUssd,
   };
 };
