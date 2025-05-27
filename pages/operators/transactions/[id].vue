@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { columns } from "~/components/transactions/columns";
 import { useTransactions } from "~/composables/useTransactions";
+import type { Transaction } from "~/types";
 
 const { getTransactionsByOperatorId } = useTransactions();
 const data = ref<Transaction[]>([]);
