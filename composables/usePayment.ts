@@ -60,12 +60,6 @@ export const usePayment = () => {
         handleApiError(error);
       }
 
-      navigateTo("/", { replace: true });
-      toast({
-        title: "Push USSD sent successfully.",
-        variant: "default",
-      });
-
       return data.value ? (data.value as unknown as Transaction) : null;
     } catch (err) {
       // handleApiError(err);

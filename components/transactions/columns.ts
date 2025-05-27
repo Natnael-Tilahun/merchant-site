@@ -40,29 +40,6 @@ export const columns: ColumnDef<Transaction>[] = [
   //   },
   // },
   {
-    accessorKey: "id",
-    header: ({ column }) => {
-      const { t } = useI18n();
-      const title = t("view");
-      return h(DataTableColumnHeaderVue, { column, title });
-    },
-    cell: ({ row }) => {
-      const { t } = useI18n();
-      const title = t("view");
-      const merchantTransactionId = row.original.merchantTransactionId;
-      const route = useRoute();
-      return h(
-        NuxtLink,
-        {
-          class:
-            "font-medium text-primary w-fit whitespace-nowrap truncate hover:w-full",
-          to: merchantTransactionId ? `${route.path}/transactionDetails/${merchantTransactionId}` : route.path,
-        },
-        title
-      ) 
-    },
-  },
-  {
     accessorKey: "payerName",
     header: ({ column }) => {
       const { t } = useI18n();
@@ -73,15 +50,15 @@ export const columns: ColumnDef<Transaction>[] = [
       const payerName = row.getValue("payerName");
       const merchantTransactionId = row.original.merchantTransactionId;
       const route = useRoute();
-      return payerName ? h(
+      return h(
         NuxtLink,
         {
           class:
             "font-medium text-primary w-fit whitespace-nowrap truncate hover:w-full",
-          to: merchantTransactionId ? `${route.path}/transactionDetails/${merchantTransactionId}` : route.path,
+          to: merchantTransactionId ? `/transactions/transactionDetails/${merchantTransactionId}` : route.path,
         },
-        payerName
-      ) : h("p", "-");
+        payerName || "View"
+      ) 
     },
   },
   {

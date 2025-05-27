@@ -39,8 +39,11 @@ const formatDate = (date: string) => {
       </div>
     </UiCard>
 
-    <UiCard v-else-if="transactionData" class="p-6">
-      <div class="grid md:grid-cols-2 gap-6">
+    <UiCard v-else-if="transactionData" class="p-6 grid lg:grid-cols-5 gap-8 w-full">
+      <div class="w-full   lg:col-span-2">
+        <TransactionsTransactionDetail :transactionDetails="transactionData"  />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 md:col-span-2 lg:col-span-3  gap-6 w-full">
         <TransactionsTransactionDetailItem
           label="Merchant Transaction Id"
           :value="transactionData.merchantTransactionId"
