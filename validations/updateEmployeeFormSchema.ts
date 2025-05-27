@@ -7,6 +7,7 @@ export const updateEmployeeFormSchema = toTypedSchema(
         firstName: z.string(),
         middleName: z.string(),
         merchantBranchId: z.string(),
-        operatorRole: z.string()
+        operatorRole: z.string(),
+        operatorCode: z.string().optional()
     })
 );

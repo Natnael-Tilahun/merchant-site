@@ -31,12 +31,13 @@ const onSubmit = form.handleSubmit(async (values: any) => {
       },
     };
     data.value = await createBranch(branchData); // Call your API function to fetch profile
-    navigateTo(`/branches`);
-    console.log("New branch data; ", data.value);
-    toast({
-      title: "Branch Created",
-      description: "Branch created successfully",
-    });
+    if (data.value) {
+      navigateTo(`/branches`);
+      toast({
+        title: "Branch Created",
+        description: "Branch created successfully",
+      });
+    }
   } catch (err: any) {
     console.error("Error creating new branch:", err.message);
     isError.value = true;
@@ -65,11 +66,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("branch_name") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_branch_name')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_branch_name')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -78,11 +75,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("branch_code") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_branch_code')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_branch_code')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -91,11 +84,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("business_phone_number") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_business_phone_number')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_business_phone_number')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,11 +93,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("city") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_city')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_city')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -117,11 +102,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("business_email") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_business_email')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_business_email')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -130,11 +111,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("postal_number") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_postal_number')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_postal_number')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -143,30 +120,17 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("fax_number") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_fax_number')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_fax_number')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             </FormField>
             <div class="col-span-full w-full py-4 flex justify-between">
-              <UiButton
-                :disabled="isSubmitting"
-                variant="outline"
-                type="button"
-                @click="$router.go(-1)"
-              >
+              <UiButton :disabled="isSubmitting" variant="outline" type="button" @click="$router.go(-1)">
                 {{ $t("cancel") }}
               </UiButton>
               <UiButton :disabled="isSubmitting" type="submit">
-                <Icon
-                  name="svg-spinners:8-dots-rotate"
-                  v-if="isSubmitting"
-                  class="mr-2 h-4 w-4 animate-spin"
-                ></Icon>
+                <Icon name="svg-spinners:8-dots-rotate" v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin"></Icon>
 
                 {{ $t("submit") }}
               </UiButton>

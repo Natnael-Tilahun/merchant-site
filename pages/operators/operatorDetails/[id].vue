@@ -74,13 +74,18 @@ const onSubmit = form.handleSubmit(async (values: any) => {
       ...values,
       fullName: values.firstName + " " + values.middleName,
     };
-    data.value = await updateEmployee(employeeId.value, employeeData); // Call your API function to fetch profile
-    toast({
-      title: "Operator Updated",
-      description: "Operator updated successfully",
-    });
-  } catch (err: any) {
-    console.error("Error updating operator:", err.message);
+    const response = await updateEmployee(employeeId.value, employeeData); // Call your API function to fetch profile
+    if (response) {
+      data.value = response
+      toast({
+        title: "Operator Updated",
+        description: "Operator updated successfully",
+      });
+    }
+
+  }
+  catch (err: any) {
+    console.log("Error updating operator:", err.message);
     isError.value = true;
   } finally {
     isSubmitting.value = false;
@@ -107,12 +112,8 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("merchant_employee_id") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    disabled
-                    :placeholder="$t('enter_merchant_employee_id')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" disabled :placeholder="$t('enter_merchant_employee_id')"
+                    v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -121,11 +122,7 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("first_name") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_first_name')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_first_name')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -134,11 +131,16 @@ const onSubmit = form.handleSubmit(async (values: any) => {
               <FormItem>
                 <FormLabel>{{ $t("middle_name") }} </FormLabel>
                 <FormControl>
-                  <UiInput
-                    type="text"
-                    :placeholder="$t('enter_middle_name')"
-                    v-bind="componentField"
-                  />
+                  <UiInput type="text" :placeholder="$t('enter_middle_name')" v-bind="componentField" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+            <FormField v-slot="{ componentField }" name="operatorCode">
+              <FormItem>
+                <FormLabel>{{ $t("operator_code") }} </FormLabel>
+                <FormControl>
+                  <UiInput type="text" :placeholder="$t('operator_code')" v-bind="componentField" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -149,18 +151,12 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                 <UiSelect v-bind="componentField">
                   <FormControl>
                     <UiSelectTrigger>
-                      <UiSelectValue
-                        :placeholder="$t('select_operator_role')"
-                      />
+                      <UiSelectValue :placeholder="$t('select_operator_role')" />
                     </UiSelectTrigger>
                   </FormControl>
                   <UiSelectContent>
                     <UiSelectGroup>
-                      <UiSelectItem
-                        v-for="role in operatorRoleData"
-                        :key="role"
-                        :value="role"
-                      >
+                      <UiSelectItem v-for="role in operatorRoleData" :key="role" :value="role">
                         {{ role }}
                       </UiSelectItem>
                     </UiSelectGroup>
@@ -180,11 +176,8 @@ const onSubmit = form.handleSubmit(async (values: any) => {
                   </FormControl>
                   <UiSelectContent>
                     <UiSelectGroup>
-                      <UiSelectItem
-                        v-for="branch in branchData"
-                        :key="branch.merchantBranchId"
-                        :value="branch.merchantBranchId"
-                      >
+                      <UiSelectItem v-for="branch in branchData" :key="branch.merchantBranchId"
+                        :value="branch.merchantBranchId">
                         {{ branch.branchName }}
                       </UiSelectItem>
                     </UiSelectGroup>
@@ -195,20 +188,11 @@ const onSubmit = form.handleSubmit(async (values: any) => {
             </FormField>
 
             <div class="col-span-full w-full py-4 flex justify-between">
-              <UiButton
-                :disabled="isSubmitting"
-                variant="outline"
-                type="button"
-                @click="$router.go(-1)"
-              >
+              <UiButton :disabled="isSubmitting" variant="outline" type="button" @click="$router.go(-1)">
                 {{ $t("cancel") }}
               </UiButton>
               <UiButton :disabled="isSubmitting" type="submit">
-                <Icon
-                  name="svg-spinners:8-dots-rotate"
-                  v-if="isSubmitting"
-                  class="mr-2 h-4 w-4 animate-spin"
-                ></Icon>
+                <Icon name="svg-spinners:8-dots-rotate" v-if="isSubmitting" class="mr-2 h-4 w-4 animate-spin"></Icon>
 
                 {{ $t("update") }}
               </UiButton>

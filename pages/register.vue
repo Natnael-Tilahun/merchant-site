@@ -26,13 +26,16 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (values: any) => {
   try {
     isSubmitting.value = true;
-    data.value = await createNeweMerchant(values); // Call your API function to fetch profile
+    const response = await createNeweMerchant(values); // Call your API function to fetch profile
+    if(response){
+      data.value = response
     navigateTo(`/`);
     console.log("New Merchant data; ", data.value);
     toast({
       title: "Merchant Created",
       description: "Merchant created successfully",
     });
+  }
   } catch (err: any) {
     isError.value = true;
   } finally {

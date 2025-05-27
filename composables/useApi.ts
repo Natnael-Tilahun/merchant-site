@@ -1,15 +1,13 @@
-import { useAuthStore } from '~/stores/auth';
+import { useAuthStore } from "~/stores/auth";
 
 export const useApi = () => {
   const runtimeConfig = useRuntimeConfig();
   const store = useAuthStore();
-  console.log("store:", store.twoFactorToken)
-
   const getHeaders = (includeAuth = true) => {
     const headers: Record<string, string> = {
-      'X-App-ID': '0a010fa1-96e8-18fd-8196-ed9cb22d0009',
-      'X-App-Version': '0a010fa1-96e8-18fd-8196-ed9d14d0000a',
-      'X-2FA-Token': store.twoFactorToken ? store.twoFactorToken : ""
+      "X-App-ID": "0a010fa1-96e8-18fd-8196-ed9cb22d0009",
+      "X-App-Version": "0a010fa1-96e8-18fd-8196-ed9d14d0000a",
+      "X-2FA-Token": store.twoFactorToken ? store.twoFactorToken : "",
     };
 
     if (includeAuth && store.accessToken) {
@@ -29,15 +27,17 @@ export const useApi = () => {
       includeAuth?: boolean;
     } = {}
   ) => {
-    const { 
-      method = 'GET', 
-      body, 
-      params, 
+    const {
+      method = "GET",
+      body,
+      params,
       baseUrl = runtimeConfig.public.API_BASE_URL,
-      includeAuth = true 
+      includeAuth = true,
     } = options;
-    
-    const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
+
+    const queryString = params
+      ? "?" + new URLSearchParams(params).toString()
+      : "";
     const url = `${baseUrl}${endpoint}${queryString}`;
 
     const { data, pending, error, status } = await useFetch<T>(url, {
@@ -51,6 +51,6 @@ export const useApi = () => {
 
   return {
     fetch,
-    getHeaders
+    getHeaders,
   };
-}; 
+};

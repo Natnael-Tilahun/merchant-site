@@ -18,6 +18,7 @@ const generateNewOTP = async () => {
   try {
     loading.value = true;
     const response = await requestTwoFactorAuth("email"); // Call your API function to fetch profile
+    if(response){
     data.value = response ? response : undefined;
     console.log("New 2fa token; ", response);
     toast({
@@ -25,6 +26,7 @@ const generateNewOTP = async () => {
       description: "Two factor token created successfully",
     });
     navigateTo(`/validate-otp`);
+  }
   } catch (err: any) {
     console.error("Error creating two factor token:", err);
     isError.value = true;
