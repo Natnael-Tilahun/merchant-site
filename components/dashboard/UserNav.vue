@@ -35,7 +35,7 @@ const { username, email } = useAuthStore();
     <UiDropdownMenuContent class="w-56 p-4" align="end">
       <UiDropdownMenuLabel class="font-normal flex md:hidden">
         <div class="flex flex-col space-y-1">
-          <p class="text-sm font-medium leading-none">{{ username }}</p>
+          <p class="text-sm font-medium leading-none">{{ username }}dd</p>
           <p class="text-xs leading-none text-muted-foreground">
             {{ email && email }}
           </p>
