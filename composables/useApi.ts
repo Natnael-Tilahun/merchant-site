@@ -5,8 +5,8 @@ export const useApi = () => {
   const store = useAuthStore();
   const getHeaders = (includeAuth = true) => {
     const headers: Record<string, string> = {
-      "X-App-ID": "0a010fa1-96e8-18fd-8196-ed9cb22d0009",
-      "X-App-Version": "0a010fa1-96e8-18fd-8196-ed9d14d0000a",
+      "X-App-ID": runtimeConfig.public.X_APP_ID,
+      "X-App-Version": runtimeConfig.public.X_APP_VERSION,
       "X-2FA-Token": store.twoFactorToken ? store.twoFactorToken : "",
     };
 
@@ -25,6 +25,7 @@ export const useApi = () => {
       params?: Record<string, any>;
       baseUrl?: string;
       includeAuth?: boolean;
+      headers?: Record<string, string>;
     } = {}
   ) => {
     const {
@@ -33,6 +34,7 @@ export const useApi = () => {
       params,
       baseUrl = runtimeConfig.public.API_BASE_URL,
       includeAuth = true,
+      headers = {},
     } = options;
 
     const queryString = params
@@ -40,10 +42,12 @@ export const useApi = () => {
       : "";
     const url = `${baseUrl}${endpoint}${queryString}`;
 
+    const finalHeaders = { ...getHeaders(includeAuth), ...headers };
+
     const { data, pending, error, status } = await useFetch<T>(url, {
       method,
       body,
-      headers: getHeaders(includeAuth),
+      headers: finalHeaders,
     });
 
     return { data, pending, error, status };

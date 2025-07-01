@@ -1,8 +1,9 @@
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "~/composables/useAuth";
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const authStore = useAuthStore();
-  const runtimeConfig = useRuntimeConfig();
+  const { getRefreshToken } = useAuth();
 
   // Skip authentication check for routes that do not require authentication
   if (to.meta.requiresAuth === false) {
@@ -13,10 +14,6 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     return navigateTo("/login");
   }
 
-  // if (to.path !== '/register') {
-  //   return navigateTo('/register')
-  // }
-
   // If the access token is expired and there's a refresh token available
   if (
     authStore.isAuthenticated &&
@@ -25,33 +22,24 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     authStore.refreshToken &&
     to.path !== "/login"
   ) {
-    console.log("Token expired: ", isTokenExpired(authStore.accessToken));
     try {
-      // Send a request to your refresh token endpoint
-      const { data, error, status } = await useFetch<any>(
-        `${runtimeConfig.public.API_BASE_URL}/api/v1/auth/refresh-token`,
-        {
-          method: "POST",
-          body: {
-            refreshToken: authStore.refreshToken,
-          },
-        }
-      );
+      const data = await getRefreshToken();
 
-      if (status.value === "error") {
-        throw new Error("Error refreshing token: " + error.value);
+      if (data) {
+        // Update the access token in the store with the new token from the response
+        authStore.$patch({
+          refreshToken: data.refreshToken,
+          accessToken: data.accessToken,
+          refreshTokenExpiresIn: data.refreshTokenExpiresIn,
+        });
+      } else {
+        // Handle token refresh failure, e.g., redirect to login page
+        throw new Error("Error refreshing token: data is null");
       }
-
-      // Update the access token in the store with the new token from the response
-      authStore.$patch({
-        refreshToken: data.value.refreshToken,
-        accessToken: data.value.accessToken,
-        refreshTokenExpiresIn: data.value.refreshTokenExpiresIn,
-      });
     } catch (error) {
       console.error("Error refreshing token:", error);
       // Handle token refresh failure, e.g., redirect to login page
-      throw new Error("Error refreshing token: " + error);
+      return navigateTo("/login");
     }
   }
 
@@ -64,6 +52,5 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       return decodedToken.exp * 1000 < Date.now();
 
     return false;
-
   }
 });

@@ -27,7 +27,6 @@ const onSubmit = form.handleSubmit(async (values: any) => {
   const userCredentials = {
     username: values.username,
     password: values.password,
-    rememberMe: values.rememberMe,
   };
 
   try {
@@ -95,24 +94,8 @@ const onSubmit = form.handleSubmit(async (values: any) => {
           </FormItem>
         </FormField>
 
-        <div class="flex justify-between items-center pb-3">
-          <FormField
-            v-slot="{ value, handleChange }"
-            type="checkbox"
-            name="rememberMe"
-          >
-            <FormItem
-              class="flex flex-row w-fit items-start gap-x-3 space-y-0 py-4"
-            >
-              <FormControl>
-                <UiCheckbox :checked="value" @update:checked="handleChange" />
-              </FormControl>
-              <div class="space-y-1 leading-none">
-                <FormLabel>{{ $t("remember_me") }}</FormLabel>
-                <FormMessage />
-              </div>
-            </FormItem>
-          </FormField>
+        <div class="flex justify-end items-center pb-3">
+ 
           <NuxtLink
             to="/forgotPassword"
             class="text-primary text-right text-sm"

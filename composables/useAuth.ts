@@ -63,31 +63,20 @@ export const useAuth = () => {
 
   const register = async (user: UserInput) => {
     try {
-      const { data, error, status } = await useAsyncData<any>(`user`, () =>
-        $fetch(
-          `${runtimeConfig.public.API_BASE_URL}/api/v1/auth/sign-in/password`,
-          {
-            method: "POST",
-            body: JSON.stringify(user),
-          }
-        )
-      ); // If login is successful, navigate to the home page
+      const { data, error, status } = await fetch<any>(
+        "/api/v1/auth/sign-in/password",
+        {
+          method: "POST",
+          body: user,
+        }
+      );
 
       if (status.value === "error") {
-        console.log("error: ", error);
-        // Handle the error, e.g., display a toast message or stay on the login page
-        toast({
-          title: (error as any)?.value?.data?.title,
-          description:
-            (error as any)?.value?.data?.detail ||
-            (error as any)?.value?.data?.message,
-          variant: "destructive",
-        });
-        throw new Error("Login error: " + error.value);
+        handleApiError(error);
+        throw new Error("Register error: " + error.value);
       }
 
       if (status.value === "success") {
-        console.log("faffd: ", data.value);
         store.setAuth({
           ...user,
           ...data?.value,
@@ -97,9 +86,8 @@ export const useAuth = () => {
         return data.value;
       }
     } catch (error) {
-      console.error("Login error: ", error);
+      console.error("Register error: ", error);
     } finally {
-      // Ensure to stop loading state whether login is successful or not
       isLoading.value = false;
     }
   };
@@ -163,8 +151,8 @@ export const useAuth = () => {
 
   const userLoggedIn = async () => {
     if (!authUser.value) {
-      const { data, error, status, pending } = await useFetch(
-        `${runtimeConfig.public.API_BASE_URL}/api/v1/auth/status`,
+      const { data, error, status } = await fetch(
+        `/api/v1/auth/status`,
         {
           headers: useRequestHeaders(["cookie"]),
         }
@@ -174,22 +162,9 @@ export const useAuth = () => {
         return error.value;
       }
 
-      //   if (data.isAdmin) {
-      //     userAdmin.value = true;
-      //   } else {
-      //     userAdmin.value = false;
-      //   }
-      //   setUser(data.user);
-
-      //   if (data.value) {
-      //     const token = useCookie('token'); // useCookie new hook in nuxt 3
-      //     token.value = data?.value?.token; // set token to cookie
-      //     this.authenticated = true; // set authenticated  state value to true
-      //   }
-      else {
+      if (status.value === "success") {
         return data.value;
       }
-      //   setUser(data.user);
     }
   };
 
