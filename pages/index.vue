@@ -12,15 +12,27 @@ const branchData = ref<Branch[]>([]);
 const employeeData = ref<Employee[]>([]);
 const transactionData = ref<Transaction[]>([]);
 const transactionFilterStore = useTransactionFilterStore();
+const currentPaymentSummaryOption = ref("Daily");
+const transactionsNumber = ref();
+const todaysTransactions = ref<Transaction[]>([]);
 
 const branchNumber = computed(() => branchData.value.length);
 const employeeNumber = computed(() => employeeData.value.length);
-const totalTransactionAmount = computed(() =>
-  transactionData.value.reduce(
-    (sum, transaction) => sum + transaction.amount,
-    0
-  )
-);
+
+const paymentSummaryOptions = computed(() => [
+  "Daily",
+  "Weekly",
+  "Monthly",
+  "Yearly",
+]);
+
+
+// const totalTransactionAmount = computed(() =>
+//   transactionData.value.reduce(
+//     (sum, transaction) => sum + transaction.amount,
+//     0
+//   )
+// );
 
 try {
   transactionFilterStore.$reset();
@@ -51,6 +63,16 @@ try {
         ""
       ),
     ]);
+    todaysTransactions.value = transactionData.value.filter((transaction) => {
+    const transactionDate = new Date(transaction.expirationDate); // Assuming 'date' is the field for transaction date
+    const today = new Date();
+    return (
+      transactionDate.getDate() === today.getDate() &&
+      transactionDate.getMonth() === today.getMonth() &&
+      transactionDate.getFullYear() === today.getFullYear()
+    );
+  });
+  transactionsNumber.value = todaysTransactions.value.length;
 } catch (error) {
   console.error("Error fetching data:", error);
 } finally {
@@ -64,6 +86,54 @@ watch(
   },
   { immediate: true }
 );
+
+const totalTransactionAmount = computed(() => {
+  const today = new Date();
+  let startOfPeriod = new Date();
+  let endOfPeriod = new Date();
+
+  switch (currentPaymentSummaryOption.value) {
+    case "Daily":
+      transactionsNumber.value = todaysTransactions.value.length;
+      return todaysTransactions.value.reduce(
+        (sum, transaction) => sum + transaction.amount,
+        0
+      );
+    case "Weekly":
+      // Set to start of week (Sunday)
+      startOfPeriod.setDate(today.getDate() - today.getDay());
+      startOfPeriod.setHours(0, 0, 0, 0);
+      // Set to end of week (Saturday 23:59:59)
+      endOfPeriod = new Date(startOfPeriod);
+      endOfPeriod.setDate(startOfPeriod.getDate() + 6);
+      endOfPeriod.setHours(23, 59, 59, 999);
+      break;
+    case "Monthly":
+      // Start of month
+      startOfPeriod = new Date(today.getFullYear(), today.getMonth(), 1, 0, 0, 0, 0);
+      // End of month
+      endOfPeriod = new Date(today.getFullYear(), today.getMonth() + 1, 0, 23, 59, 59, 999);
+      break;
+    case "Yearly":
+      // Start of year
+      startOfPeriod = new Date(today.getFullYear(), 0, 1, 0, 0, 0, 0);
+      // End of year
+      endOfPeriod = new Date(today.getFullYear(), 11, 31, 23, 59, 59, 999);
+      break;
+    default:
+      return 0; // Fallback
+  }
+  // Filter transactions based on the selected period
+  const filteredTransactions = transactionData.value.filter((transaction) => {
+    const transactionDate = new Date(transaction.expirationDate);
+    return transactionDate >= startOfPeriod && transactionDate <= endOfPeriod;
+  });
+  transactionsNumber.value = filteredTransactions.length;
+  return filteredTransactions.reduce(
+    (sum, transaction) => sum + transaction.amount,
+    0
+  );
+});
 </script>
 
 <template>
@@ -147,19 +217,34 @@ watch(
         <UiCardHeader
           class="flex flex-row items-center justify-between space-y-0 pb-2"
         >
-          <UiCardTitle class="text-sm font-medium">
-            {{ $t("transactions") }}
-          </UiCardTitle>
-          <NuxtLink to="/transactions/initiate" class="w-fit self-end">
-            <UiButton
-              size="sm"
-              variant="outline"
-              class="w-fit self-end px-4 font-bold text-base rounded-full bg-primary text-background"
+        <!-- <div> -->
+
+        <UiCardTitle class="font-semibold text-base"
+            >My {{ currentPaymentSummaryOption }} {{ $t("transactions") }}</UiCardTitle
+          >
+
+          <UiSelect name="paymentStatus" v-model="currentPaymentSummaryOption">
+            <UiSelectTrigger
+              class="h-8 w-[100px] z-10 border border-muted-foreground/30"
             >
-              <Icon name="material-symbols:add" size="28" class="mr-"></Icon>
-              {{ $t("new") }}
-            </UiButton>
-          </NuxtLink>
+              <UiSelectValue :placeholder="`${currentPaymentSummaryOption}`" />
+            </UiSelectTrigger>
+            <UiSelectContent side="bottom">
+              <UiSelectItem
+                v-for="option in paymentSummaryOptions"
+                :key="option"
+                :value="option"
+              >
+                {{ option }}
+              </UiSelectItem>
+            </UiSelectContent>
+          </UiSelect>
+        <!-- </div> -->
+
+          <!-- <UiCardTitle class="text-sm font-medium">
+            {{ $t("transactions") }}
+          </UiCardTitle> -->
+          
           <!-- <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -187,6 +272,16 @@ watch(
               {{ $t("total_transaction_amount") }}
             </p>
           </div>
+          <NuxtLink to="/transactions/initiate" class="w-fit self-end">
+            <UiButton
+              size="sm"
+              variant="outline"
+              class="w-fit self-end px-4 font-bold text-base rounded-full bg-primary text-background"
+            >
+              <Icon name="material-symbols:add" size="28" class="mr-"></Icon>
+              {{ $t("new") }}
+            </UiButton>
+          </NuxtLink>
         </UiCardContent>
       </UiCard>
     </div>

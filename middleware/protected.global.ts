@@ -6,14 +6,18 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const { getRefreshToken } = useAuth();
 
   // Skip authentication check for routes that do not require authentication
-  if (to.meta.requiresAuth === false) {
+  // if (to.meta.requiresAuth === false) {
+  //   return;
+  // }
+
+  const publicRoutes = ["/login", "/invalid-2fa", "/forgotPassword", "/activateNewUser"];
+  if (publicRoutes.includes(to.path)) {
     return;
   }
 
   if (!authStore.isAuthenticated && to.path !== "/login") {
     return navigateTo("/login");
   }
-
   // If the access token is expired and there's a refresh token available
   if (
     authStore.isAuthenticated &&
